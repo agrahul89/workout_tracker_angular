@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
-import { RouteModule } from './route/route.module';
+import { RoutingModule } from './routing/routing.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,7 @@ import { RouteModule } from './route/route.module';
   ],
   imports: [
     BrowserModule,
-    RouteModule
+    RoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

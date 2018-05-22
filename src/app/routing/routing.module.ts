@@ -18,4 +18,4 @@ const paths: Routes = [
   exports: [RouterModule],
   declarations: []
 })
-export class RouteModule { }
+export class RoutingModule { }
