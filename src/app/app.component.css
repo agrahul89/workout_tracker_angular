@@ -1,14 +1,3 @@
-h1,h2,h3,h4,h5,h6 {
-  color: rgba(0, 0, 0, 0.85);
-}
-
-a {
-  color: rgba(0,0,0,.55);
-  text-decoration: none;
-}
-a:hover {color: #40A9FF;}
-a:active {color: #1890FF;}
-
 header {
   min-width: 360px;
   left:0px;
@@ -37,10 +26,6 @@ nav a:active {
   transition: 100ms;
 }
 
-input {
-  font-size: 0.9rem;
-}
-
 .brand {
   color: #1890ff;
   font-style: italic;
@@ -49,13 +34,9 @@ input {
 }
 
 .content {
-  margin: 4rem auto;
+  margin: 2rem auto;
   padding: 0 1rem;
   min-width: 320px;
   width: 30%;
   max-width: 540px;
-}
-
-.section-header {
-  margin-bottom: 1rem;
 }
