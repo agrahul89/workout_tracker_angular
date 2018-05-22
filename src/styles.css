@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+@charset "iso-8859-1";
+html {
+  overflow-y: scroll;
+}
+/******************************************************************************/
+body {
+  margin: 0 auto;
+}
