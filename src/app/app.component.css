@@ -1,10 +1,10 @@
 header {
-  min-width: 360px;
+  min-width: var(--min-width);
   left:0px;
   top:0px;
   width:100%;
-  box-shadow: 0px 1px 20px 2px lightgray;
-  background-color: white;
+  box-shadow: 0px 1px 20px 2px var(--shadow-color);
+  background-color: var(--bg-color);
 }
 
 nav {
@@ -18,18 +18,16 @@ nav a {
   margin-right: 0.25em;
 }
 nav a:hover {
-  /* border-bottom: 2px solid #40A9FF; */
-  border-top: 3px solid #40A9FF;
+  border-top: 3px solid var(--accent-color);
   transition: 200ms;
 }
 nav a:active {
-  /* border-bottom: 2px solid #1890FF; */
-  border-top: 3px solid #1890FF;
+  border-top: 3px solid var(--accent-color);
   transition: 100ms;
 }
 
 .brand {
-  color: #1890ff;
+  color: var(--accent-color);
   font-style: italic;
   line-height: 2em;
   padding: 0 0 0 1em;
@@ -38,8 +36,8 @@ nav a:active {
 .content {
   margin: 2rem auto;
   padding: 1rem 2rem 3rem 2rem;
-  min-width: 320px;
+  min-width: var(--min-width);
   width: 30%;
   max-width: 540px;
-  box-shadow: 0 1px 10px 2px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 10px 2px var(--shadow-color);
 }
