@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 const paths: Routes = [
-  {path: '', pathMatch: 'full', component: SigninComponent},
+  {path: '', pathMatch: 'full', redirectTo: 'signin'},
   {path: 'signin', component: SigninComponent},
   {path: 'signup', component: SignupComponent}
 ];
