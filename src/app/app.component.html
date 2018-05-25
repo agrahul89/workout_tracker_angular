@@ -4,33 +4,34 @@
     <span class="d-none d-lg-inline-block">{{title}}</span>
   </h4>
   <!-- Navigation post login screen -->
-  <nav class="float-right nav nav-pills">
+  <!-- TODO: apply hide/un-hide criteria -->
+  <nav class="float-right nav nav-pills" [hidden]="true">
     <a href="#" class="nav-item nav-link">
-        <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-        <span class="d-none d-lg-inline-block">Workout</span>
+        <i id="workout" class="fa fa-calendar-check-o" aria-hidden="true"></i>
+        <label for="workout" class="d-none d-lg-inline-block">Workout</label>
     </a>
     <a href="#" class="nav-item nav-link">
-        <i class="fa fa-pie-chart" aria-hidden="true"></i>
-        <span class="d-none d-lg-inline-block">Category</span>
+        <i id="category" class="fa fa-pie-chart" aria-hidden="true"></i>
+        <label for="category" class="d-none d-lg-inline-block">Category</label>
     </a>
     <a href="#" class="nav-item nav-link">
-        <i class="fa fa-line-chart" aria-hidden="true"></i>
-        <span class="d-none d-lg-inline-block">Track</span>
+        <i id="track" class="fa fa-line-chart" aria-hidden="true"></i>
+        <label for="track" class="d-none d-lg-inline-block">Track</label>
     </a>
     <a href="#" class="nav-item nav-link">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-        <span class="d-none d-lg-inline-block">Logout</span>
+        <i id="signout" class="fa fa-sign-out" aria-hidden="true"></i>
+        <label for="signout" class="d-none d-lg-inline-block">Logout</label>
     </a>
   </nav>
   <!-- Navigation for login screen -->
   <nav class="float-right nav nav-pills">
     <a href="#" class="nav-item nav-link" routerLink="/signin" routerLinkActive="active-link">
-      <i class="fa fa-sign-in" aria-hidden="true"></i>
-      <span class="d-none d-lg-inline-block">Login</span>
+      <i id="signin" class="fa fa-sign-in" aria-hidden="true"></i>
+      <label for="signin" class="d-none d-lg-inline-block">Login</label>
     </a>
     <a href="#" class="nav-item nav-link" routerLink="/signup" routerLinkActive="active-link">
-      <i class="fa fa-user-plus" aria-hidden="true"></i>
-      <span class="d-none d-lg-inline-block">Signup</span>
+      <i id="signup" class="fa fa-user-plus" aria-hidden="true"></i>
+      <label for="signup" class="d-none d-lg-inline-block">Signup</label>
     </a>
   </nav>
 </header>

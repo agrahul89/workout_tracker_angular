@@ -25,6 +25,9 @@ nav a:active {
   border-top: 3px solid var(--accent-color);
   transition: 100ms;
 }
+nav a label::before {
+  content: "\00a0";
+}
 
 .brand {
   color: var(--accent-color);

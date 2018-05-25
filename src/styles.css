@@ -1,7 +1,7 @@
 html {
   --accent-color: var(--primary);
-  --bg-color: rgba(0,0,0,0);
-  --header-text-color: rgba(0, 0, 0, 0.85);
+  --bg-color: rgba(256,256,256,1);
+  --header-text-color: rgba(0, 0, 0, 0.75);
   --link-text-color: rgba(0, 0, 0, 0.55);
   --shadow-color: rgba(211, 211, 211, 0.6);
   --min-width: 320px;
@@ -22,8 +22,13 @@ body {
   margin: 0 auto;
 }
 
+form label, small {
+  font-style: italic;
+}
+
 h1,h2,h3,h4,h5,h6 {
   color: var(--header-text-color);
+  font-style: italic
 }
 
 a {

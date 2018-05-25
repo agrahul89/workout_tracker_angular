@@ -1,10 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { RoutingRoutes } from './routing.routing';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
-import { RoutingModule } from './routing/routing.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,10 @@ import { RoutingModule } from './routing/routing.module';
   ],
   imports: [
     BrowserModule,
-    RoutingModule
+    FormsModule,
+    HttpClientModule,
+    // ReactiveFormsModule,
+    RoutingRoutes,
   ],
   providers: [],
   bootstrap: [AppComponent]
