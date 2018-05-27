@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { RoutingRoutes } from './routing.routing';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
+import { RestClientService } from './rest-client.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { SignupComponent } from './signup/signup.component';
     // ReactiveFormsModule,
     RoutingRoutes,
   ],
-  providers: [],
+  providers: [
+    RestClientService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
