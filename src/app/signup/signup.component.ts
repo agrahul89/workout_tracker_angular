@@ -9,7 +9,7 @@ import { equal } from 'assert';
 })
 export class SignupComponent implements OnInit {
 
-  sampleFormData: SignupModel = new SignupModel('', '', '', '');
+  registrationForm: SignupModel = new SignupModel('', '', '', '');
   validationPatterns = {
     'firstname': '^[a-zA-Z]{2,}$',
      'lastname': '^[a-zA-Z]{2,}$',
@@ -27,7 +27,7 @@ export class SignupComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // this.sampleFormData = new SignupModel('Rahul', 'Agarwal', 'rahul@agarwal.com', 'P@ssw0rd');
+    // this.registrationForm = new SignupModel('Rahul', 'Agarwal', 'rahul@agarwal.com', 'P@ssw0rd');
   }
 
 }
