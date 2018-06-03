@@ -1,0 +1,17 @@
+.section-header {
+    margin-bottom: 1rem;
+ }
+ .card {
+    box-shadow: 0 1px 10px 2px var(--shadow-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+ }
+ input {
+    font-size: 0.8rem;
+ }
+ form ul, form ul li:last-child div.form-row div.form-group {
+    margin-bottom: 0;
+ }
+
+ .hide {display: none;}
+ .show {display: block;}

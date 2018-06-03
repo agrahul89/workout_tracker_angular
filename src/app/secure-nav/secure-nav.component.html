@@ -1,8 +1,3 @@
-<header class="clearfix sticky-top">
-  <h4 id="brand" class="float-left text-lowercase brand">
-    <i class="fa fa-bar-chart-o" aria-hidden="true"></i>
-    <span class="d-none d-lg-inline-block">{{title}}</span>
-  </h4>
   <!-- Navigation post login screen -->
   <!-- TODO: apply hide/un-hide criteria -->
   <nav id="secure-nav" class="float-right nav nav-pills" [hidden]="false">
@@ -23,19 +18,3 @@
         <label for="signout" class="d-none d-lg-inline-block">Logout</label>
     </a>
   </nav>
-  <!-- Navigation for login screen -->
-  <nav id="public-nav" class="float-right nav nav-pills">
-    <a href="#" class="nav-item nav-link" routerLink="/signin" routerLinkActive="active-link">
-      <i id="signin" class="fa fa-sign-in" aria-hidden="true"></i>
-      <label for="signin" class="d-none d-lg-inline-block">Login</label>
-    </a>
-    <a href="#" class="nav-item nav-link" routerLink="/signup" routerLinkActive="active-link">
-      <i id="signup" class="fa fa-user-plus" aria-hidden="true"></i>
-      <label for="signup" class="d-none d-lg-inline-block">Signup</label>
-    </a>
-  </nav>
-</header>
-
-<section class="content">
-  <router-outlet></router-outlet>
-</section>

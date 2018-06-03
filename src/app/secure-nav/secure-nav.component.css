@@ -1,0 +1,21 @@
+nav {
+    line-height: 2rem;
+    padding-right: 2em;
+  }
+  nav a {
+    border-radius: 0%;
+    font-size: 0.9rem;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+  }
+  nav a:hover {
+    border-top: 3px solid var(--accent-color);
+    transition: 200ms;
+  }
+  nav a:active {
+    border-top: 3px solid var(--accent-color);
+    transition: 100ms;
+  }
+  nav a label::before {
+    content: "\00a0";
+  }
