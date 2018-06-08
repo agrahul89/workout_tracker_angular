@@ -27,7 +27,7 @@ import { CategoryComponent } from './category/category.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    // ReactiveFormsModule,
+    ReactiveFormsModule,
     RoutingRoutes,
   ],
   providers: [
