@@ -35,14 +35,16 @@
     color: var(--shadow-color);
 }
 
-/* button {
-    box-shadow: 0 0 3px gray;
-} */
+button.rounded-circle {
+    border: none;
+    box-shadow: 2px 2px 3px 0 rgba(0,0,0,.12), 2px 2px 2px 0 rgba(0,0,0,.24);
+}
+button.rounded-circle:hover {
+    background-color: white;
+    box-shadow: 2px 2px 3px 0 rgba(0,0,0,.12), 2px 2px 2px 0 rgba(0,0,0,.24);
+    color: black;
+}
 
 input {
     font-size: 0.8rem;
 }
-
-/* form ul li div div {
-    margin-bottom: 0.5rem;
-} */
