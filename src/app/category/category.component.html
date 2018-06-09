@@ -1,5 +1,10 @@
 <div class="category">
   <h3 class="section-header">Category</h3>
+  <div class="position-fixed fixed-bottom text-right mb-3 mr-3">
+    <button class="btn btn-lg btn-success rounded-circle">
+      <i class="fa fa-plus text-white"></i>
+    </button>
+  </div>
   <form>
     <!-- add new category -->
     <div class="form-row" id="add">
@@ -22,63 +27,37 @@
 
     <ul class="list-unstyled form-row">
       <li class="col-12 col-xl-6" *ngFor="let category of filteredCategories">
-        <div class="card text-center" id="category-{{filteredCategories.indexOf(category)}}">
-          <!-- category icon -->
-          <i class="fa fa-exclamation-triangle fa-8x text-silhouette"></i>
-          <!-- category name -->
-          <h2 [hidden]="category.editing">{{category.category}}</h2>
-          <input type="text" class="form-control text-center" value="{{category.category}}"
-          [hidden]="!category.editing" [autofocus]="category.editing">
-          <hr>
-          <!-- change the category name -->
-          <div class="form-row text-center">
-            <div class="col text-right text-primary" [ngClass]="category.editing?'hide':'show'">
-              <button class="btn btn-outline-primary rounded-circle" (click)="activate(category)">
-                <i class="fa fa-lg fa-pencil"></i>
-              </button>
-            </div>
-            <!-- update the category -->
-            <div class="col text-center text-primary" [ngClass]="category.editing?'show':'hide'">
-              <button class="btn btn-outline-success rounded-circle" (click)="update(category)">
-                <i class="fa fa-lg fa-check"></i>
-              </button>
-            </div>
-            <!-- delete the category -->
-            <div class="col text-left text-danger" [ngClass]="category.editing?'hide':'show'">
-              <button class="btn btn-outline-danger rounded-circle" (click)="delete(category)">
-                <i class="fa fa-lg fa-minus"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
 
-    <ul class="list-unstyled" [hidden]="true">
-      <li *ngFor="let category of filteredCategories" class="card">
-        <div class="form-row" id="search-result">
-          <!-- name of category -->
-          <div class="form-group col-8 col-sm-8 col-md-8 text-center">
-            <input type="text" class="form-control" value="{{category.category}}"
-            [readOnly]="!category.editing">
+        <div class="card bg-light text-center" id="category-{{filteredCategories.indexOf(category)}}">
+          <!-- category icon -->
+          <div class="card-body">
+            <i class="fa fa-8x fa-exclamation-triangle text-silhouette"></i>
           </div>
-          <!-- enable category for editing -->
-          <div class="form-group col-2 col-sm-2 col-md-2 text-center" [ngClass]="category.editing?'hide':'show'">
-            <button class="btn btn-primary btn-block btn-sm" (click)="activate(category)">
-              <span class="fa fa-pencil-square-o"></span>
+          <!-- category name -->
+          <div class="card-footer">
+            <h2 class="card-title" [hidden]="category.editing">{{category.category}}</h2>
+            <input type="text" class="form-control-plaintext text-center"
+            value="{{category.category}}" [hidden]="!category.editing" [autofocus]="category.editing">
+          </div>
+          <div class="buttons float-right">
+            <!-- delete the category -->
+            <button class="btn btn-danger  rounded-circle mr-2" (click)="delete(category)"
+            [ngClass]="category.editing?'hide':'show'">
+              <i class="fa fa-times"></i>
             </button>
-          </div>
-          <!-- delete the category -->
-          <div class="form-group col-2 col-sm-2 col-md-2" [ngClass]="category.editing?'hide':'show'">
-            <button class="btn btn-danger btn-block btn-sm" (click)="delete(category)">
-              <span class="fa fa-ban"></span>
+            <!-- change the category name -->
+            <button class="btn btn-primary rounded-circle mr-2" (click)="activate(category)"
+            [ngClass]="category.editing?'hide':'show'">
+              <i class="fa fa-pencil"></i>
             </button>
-          </div>
-          <!-- updates the change made to category -->
-          <div class="form-group col-4 col-sm-4 col-md-4" [ngClass]="category.editing?'show':'hide'">
-            <button class="btn btn-primary btn-block text-white pt-2 fa fa-lg fa-check" (click)="update(category)"></button>
+            <!-- update the category -->
+            <button class="btn btn-success rounded-circle mr-2" (click)="update(category)"
+            [ngClass]="category.editing?'show':'hide'">
+              <i class="fa fa-check"></i>
+            </button>
           </div>
         </div>
+
       </li>
     </ul>
 
