@@ -1,23 +1,27 @@
 <div class="category">
   <h3 class="section-header">Category</h3>
-  <form>
+  <form #categoryForm="ngForm" novalidate>
     <!-- add new category -->
     <div class="form-row" id="add">
       <div class="form-group col-12 mb-0">
         <label for="add" class="form-control-plaintext pl-2">Add category</label>
       </div>
       <div class="form-group col-8 col-md-9 col-lg-10">
-        <input type="text" class="form-control form-control-lg" placeholder="Add a new Category">
+        <input #addCategory type="text" class="form-control form-control-lg" placeholder="Add a new Category">
       </div>
       <div class="form-group col-4 col-md-3 col-lg-2">
-        <button class="btn btn-primary btn-block"><i class="fa fa-plus"></i></button>
+        <button class="btn btn-primary btn-block" (click)="add(addCategory.value)">
+          <i class="fa fa-plus"></i>
+        </button>
       </div>
     </div>
 
     <!-- filter categories -->
     <div class="form-group" id="search">
       <label for="search">Search categories</label>
-      <input type="text" class="form-control form-control-lg" placeholder="Search for existing categories">
+      <input #searchCategory type="text" class="form-control form-control-lg"
+      placeholder="Search for existing categories"
+      (change)="filter(this)">
     </div>
 
     <ul class="list-unstyled form-row">
@@ -41,7 +45,7 @@
               <i class="fa fa-times"></i>
             </button>
             <!-- change the category name -->
-            <button class="btn btn-primary rounded-circle mr-2" (click)="activate(category)"
+            <button class="btn btn-primary rounded-circle mr-2" (click)="edit(category)"
             [ngClass]="category.editing?'hide':'show'">
               <i class="fa fa-pencil"></i>
             </button>

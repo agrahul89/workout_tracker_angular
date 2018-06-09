@@ -1,6 +1,5 @@
 import { CategoryModel } from './category-model';
 import { Component, OnInit } from '@angular/core';
-import { filterQueryId } from '@angular/core/src/view/util';
 
 @Component({
   selector: 'app-category',
@@ -31,8 +30,13 @@ export class CategoryComponent implements OnInit {
     this.filteredCategories = this.categories;
   }
 
-  private activate(category: CategoryModel) {
-    category.editing = true;
+  private add(category: string) {
+    if (category === '' || category === undefined || category === null) {
+      console.log('Invalid category name :: ' + category);
+    } else {
+      // TODO: call service to add category
+      this.categories.push(new CategoryModel(category));
+    }
   }
 
   private delete(category: CategoryModel) {
@@ -44,7 +48,12 @@ export class CategoryComponent implements OnInit {
     console.log(this.categories.length);
   }
 
+  private edit(category: CategoryModel) {
+    category.editing = true;
+  }
+
   private filter(filterQuery: String): CategoryModel[] {
+    console.log(filterQuery);
     if (filterQuery !== null && filterQuery !== undefined && filterQuery.trim() !== '') {
       // TODO: filter categories list and return
     }
