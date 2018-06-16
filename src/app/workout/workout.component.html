@@ -1,3 +1,62 @@
 <div class="workout">
   <h3 class="section-header">Workout</h3>
+  <div class="position-fixed fixed-bottom text-right mb-3 mr-3">
+    <button class="btn btn-lg btn-success rounded-circle">
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+
+  <form #workoutForm="ngForm" novalidate>
+    <!-- filter workouts -->
+    <div class="form-group" id="search">
+        <label for="search">Search workouts</label>
+        <input #searchWorkout type="text" class="form-control form-control-lg"
+        placeholder="Search for existing workouts"
+        (change)="filter(this)">
+      </div>
+
+      <ul class="list-unstyled form-row">
+        <li class="col-12 col-lg-6" *ngFor="let workout of filteredWorkouts">
+
+          <div class="card bg-light text-center" id="workout-{{filteredWorkouts.indexOf(workout)}}">
+            <!-- workout icon -->
+            <div class="card-body">
+              <i class="fa fa-8x fa-exclamation-triangle text-silhouette"></i>
+            </div>
+
+            <!-- workout name -->
+            <div class="card-footer text-left">
+              <h2 class="card-title">{{workout.category}}</h2>
+              <h4 class="card-subtitle">{{workout.workout}}</h4>
+              <p class="card-text">{{workout.note}}</p>
+            </div>
+
+            <div class="buttons float-right">
+              <!-- delete the workout -->
+              <button class="btn btn-danger  rounded-circle mr-2" (click)="delete(workout)">
+                <i class="fa fa-times"></i>
+              </button>
+              <!-- change the workout name -->
+              <button class="btn btn-primary rounded-circle mr-2" (click)="edit(workout)"
+              [ngClass]="workout.end === undefined ? 'show' : 'hide'">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <!-- start the workout -->
+              <button class="btn btn-success rounded-circle mr-2" (click)="start(workout)"
+              [ngClass]="workout.start === undefined && workout.end === undefined ? 'show' : 'hide'">
+                <i class="fa fa-play"></i>
+              </button>
+              <!-- end the workout -->
+              <button class="btn btn-danger  rounded-circle mr-2" (click)="end(workout)"
+              [ngClass]="workout.start !== undefined && workout.end === undefined ? 'show' : 'hide'">
+                <i class="fa fa-stop"></i>
+              </button>
+            </div>
+          </div>
+
+        </li>
+      </ul>
+
+  </form>
+
 </div>
