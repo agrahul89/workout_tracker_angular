@@ -3,7 +3,10 @@
   <h3 class="section-header d-inline-block">Sign Up</h3>&nbsp;
   <i class="fa fa-check-circle-o fa-lg text-primary" [hidden]="signupForm.invalid"></i>
 
-  <form #signupForm="ngForm" novalidate>
+  <div class="alert alert-danger" role="alert" [hidden]="!registrationFailed">
+    <small>{{registrationMessage}}</small>
+  </div>
+  <form #signupForm="ngForm" novalidate (submit)="onSubmit()">
 
     <div class="form-group">
       <!-- Header Title -->

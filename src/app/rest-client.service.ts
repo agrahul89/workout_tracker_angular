@@ -9,16 +9,32 @@ import { SignupModel } from './signup/signup-model';
 export class RestClientService {
 
   serviceBaseUrl: String = 'http://localhost:8080/tracker';
-  regsitrationUrl: String = this.serviceBaseUrl + '/registration';
+  registrationUrl: String = this.serviceBaseUrl + '/registration';
 
   constructor(private client: HttpClient) { }
 
   registerNewUser(signupForm: SignupModel) {
     return this.client.post(
-      this.regsitrationUrl.toString(),
+      this.registrationUrl.toString(),
       JSON.stringify(signupForm),
       {
         headers : {'Content-Type' : 'application/json'},
+        observe : 'response',
+        reportProgress : false,
+        responseType : 'json'
+      }
+    );
+  }
+
+  searchEmail(email: String) {
+    const emailSearchUrl = this.registrationUrl + '/email/' + email + '/';
+    return this.client.get(
+      emailSearchUrl.toString(),
+      {
+        headers : {
+          'Accept' : 'application/json',
+          'Access-Control-Allow-Origin' : '*',
+      },
         observe : 'response',
         reportProgress : false,
         responseType : 'json'
