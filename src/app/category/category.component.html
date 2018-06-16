@@ -25,7 +25,7 @@
     </div>
 
     <ul class="list-unstyled form-row">
-      <li class="col-12 col-xl-6" *ngFor="let category of filteredCategories">
+      <li class="col-12 col-lg-6" *ngFor="let category of filteredCategories">
 
         <div class="card bg-light text-center" id="category-{{filteredCategories.indexOf(category)}}">
           <!-- category icon -->
@@ -33,7 +33,7 @@
             <i class="fa fa-8x fa-exclamation-triangle text-silhouette"></i>
           </div>
           <!-- category name -->
-          <div class="card-footer">
+          <div class="card-footer text-left">
             <h2 class="card-title" [hidden]="category.editing">{{category.category}}</h2>
             <input type="text" class="form-control-plaintext text-center"
             value="{{category.category}}" [hidden]="!category.editing" [autofocus]="category.editing">

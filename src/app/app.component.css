@@ -41,6 +41,6 @@ nav a label::before {
   padding: 1rem 2rem 3rem 2rem;
   min-width: var(--min-width);
   width: 50%;
-  max-width: 600px;
+  max-width: 840px;
   box-shadow: 0 1px 10px 2px var(--shadow-color);
 }
