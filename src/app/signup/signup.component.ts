@@ -3,7 +3,6 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 import { RestClientService } from '../rest-client.service';
 import { SignupModel } from './signup-model';
-import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +13,7 @@ export class SignupComponent implements OnInit {
 
   registrationFailed = false;
   registrationMessage = '';
-  registrationForm: SignupModel = new SignupModel();
+  registrationForm: SignupModel;
 
   validationPatterns = {
     'firstname': '^[a-zA-Z]{2,}$',
@@ -33,7 +32,7 @@ export class SignupComponent implements OnInit {
   constructor(private signupService: RestClientService) { }
 
   ngOnInit() {
-    // this.registrationForm = new SignupModel('Rahul', 'Agarwal', 'rahul@agarwal.com', 'P@ssw0rd');
+    this.registrationForm = new SignupModel();
   }
 
   onSubmit() {
@@ -54,8 +53,8 @@ export class SignupComponent implements OnInit {
       this.registrationForm.email = '';
     } else {
       this.signupService.registerNewUser(this.registrationForm).subscribe(
-        response => this.handleResponse(response),
-        error => this.signupService.handleErrors(error),
+        res => this.handleResponse(res),
+        err => this.signupService.handleError(err),
       );
     }
   }
@@ -75,7 +74,7 @@ export class SignupComponent implements OnInit {
     const status = response.status;
     const keys = response.headers.keys();
     const headers = keys.map(key => `${key} : ${response.headers.get(key)}`);
-    headers.forEach(element => { console.log(element); });
+    // headers.forEach(element => { console.log(element); });
 
     if (status === 201) {
       this.registrationFailed = false;

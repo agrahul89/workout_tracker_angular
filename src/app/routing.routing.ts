@@ -3,9 +3,11 @@ import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { Routes, RouterModule } from '@angular/router';
 import { WorkoutComponent } from './workout/workout.component';
+import { AuthService } from './auth.service';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'signin'},
+  // TODO Implement Authentication/Routing Guard
+  {path: '', pathMatch: 'full', redirectTo: 'signin'/* , canActivate: [AuthService] */},
   {path: 'signin',   component: SigninComponent},
   {path: 'signup',   component: SignupComponent},
   {path: 'workout',  component: WorkoutComponent},

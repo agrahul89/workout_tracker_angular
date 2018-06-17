@@ -2,56 +2,47 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
-import { SignupComponent } from './signup/signup.component';
 import { SignupModel } from './signup/signup-model';
+import { ServiceBase } from './base/base-service';
 
 @Injectable()
-export class RestClientService {
+export class RestClientService extends ServiceBase {
 
-  serviceBaseUrl: String = 'http://localhost:8080/tracker';
-  registrationUrl: String = this.serviceBaseUrl + '/registration';
+  private signupUrl: String = this.baseUrl + '/registration';
 
-  constructor(private client: HttpClient) { }
+  constructor(private client: HttpClient) {
+    super(client);
+  }
 
   registerNewUser(signupForm: SignupModel) {
     return this.client.post(
-      this.registrationUrl.toString(),
+      this.signupUrl.toString(),
       JSON.stringify(signupForm),
       {
-        headers : {
-          'Content-Type' : 'application/json',
-          'Accept' : 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        observe : 'response',
-        reportProgress : false,
-        responseType : 'json'
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
       }
     );
   }
 
   searchEmail(email: String) {
-    const emailSearchUrl = this.registrationUrl + '/email/' + email + '/';
+    const emailSearchUrl = this.signupUrl + '/email/' + email + '/';
     return this.client.get(
       emailSearchUrl.toString(),
       {
-        headers : {
-          'Accept' : 'application/json',
-      },
-        observe : 'response',
-        reportProgress : false,
-        responseType : 'json'
+        headers: {
+          'Accept': 'application/json',
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
       }
     );
-  }
-
-  handleErrors(error: HttpErrorResponse): Observable<never> {
-    if (error.error instanceof ErrorEvent) {
-      console.log(`Client error :: ${error.error.message}`);
-    } else {
-      console.log(`Server error [${error.status}]:: ${error.statusText}`);
-      console.log(`Error Body : ${error.error}`);
-    }
-    return throwError(error);
   }
 
 }
