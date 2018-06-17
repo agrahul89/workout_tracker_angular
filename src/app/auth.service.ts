@@ -35,6 +35,7 @@ export class AuthService extends ServiceBase implements CanActivate, OnInit {
 
   resetAccess() {
     this.loggedIn$.next(false);
+    this.router.navigate(['/']);
   }
 
   signin(signinForm: SigninModel): void {

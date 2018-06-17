@@ -10,8 +10,12 @@ import { AuthService } from './auth.service';
 export class AppComponent extends ComponentBase {
 
   title = 'Workout Tracker';
-  constructor(service: AuthService) {
-    super(service);
+  constructor(private authService: AuthService) {
+    super(authService);
+  }
+
+  logout(): void {
+    this.authService.signout();
   }
 
 }
