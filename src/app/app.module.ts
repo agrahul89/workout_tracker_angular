@@ -22,7 +22,7 @@ import { CategoryComponent } from './category/category.component';
     SignupComponent,
     WorkoutComponent,
     CategoryComponent
-],
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -31,7 +31,7 @@ import { CategoryComponent } from './category/category.component';
     RoutingRoutes,
   ],
   providers: [
-    RestClientService
+    RestClientService,
   ],
   bootstrap: [AppComponent]
 })

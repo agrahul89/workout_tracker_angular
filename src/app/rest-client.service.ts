@@ -18,7 +18,10 @@ export class RestClientService {
       this.registrationUrl.toString(),
       JSON.stringify(signupForm),
       {
-        headers : {'Content-Type' : 'application/json'},
+        headers : {
+          'Content-Type' : 'application/json',
+          'Accept' : 'application/json',
+        },
         observe : 'response',
         reportProgress : false,
         responseType : 'json'
@@ -33,7 +36,6 @@ export class RestClientService {
       {
         headers : {
           'Accept' : 'application/json',
-          'Access-Control-Allow-Origin' : '*',
       },
         observe : 'response',
         reportProgress : false,

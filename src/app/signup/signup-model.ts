@@ -7,10 +7,10 @@ export class SignupModel {
     "email" : "test5@test.mail"
   } */
   constructor(
-    public firstname: string,
-    public lastname: string,
-    public email: string,
-    public password: string) { }
+    public firstname?: string,
+    public lastname?: string,
+    public email?: string,
+    public password?: string) { }
 
     toString() {return JSON.stringify(this); }
 }
