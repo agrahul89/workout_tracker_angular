@@ -9,19 +9,22 @@ import { SignupModel } from './signup-model';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
 
-  registrationFailed = false;
-  registrationMessage = '';
-  registrationForm: SignupModel;
+  private static REG_SCSS_MSG = 'Registration successful';
+  private static REG_FAIL_MSG = 'Registration failed! Please try again';
 
-  validationPatterns = {
+  public registrationFailed = false;
+  public registrationMessage = '';
+  public registrationForm = new SignupModel();
+
+  public validationPatterns = {
     'firstname': '^[a-zA-Z]{2,}$',
     'lastname': '^[a-zA-Z]{2,}$',
     'email': '^[a-z0-9_%$#\\.\\+\\-]{2,}@[a-zA-Z0-9\\-]{2,}\\.[a-z]{2,}$',
     'password': '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#@$\\-]).{8}$'
   };
-  validPasswordRules = [
+  public validPasswordRules = [
     'Password must be exactly 8 characters',
     'Password must contain one of #@$-',
     'Password must contain one uppercase letter',
@@ -30,10 +33,6 @@ export class SignupComponent implements OnInit {
   ];
 
   constructor(private signupService: RestClientService) { }
-
-  ngOnInit() {
-    this.registrationForm = new SignupModel();
-  }
 
   onSubmit() {
     this.checkEmailExistsAndRegister(this.registrationForm.email);
@@ -67,7 +66,7 @@ export class SignupComponent implements OnInit {
       console.log(`Error Body : ${JSON.stringify(error.error)}`);
     }
     this.registrationFailed = true;
-    this.registrationMessage = 'Registration failed! Please try again';
+    this.registrationMessage = String(SignupComponent.REG_FAIL_MSG);
   }
 
   handleResponse(response: HttpResponse<Object>): void {
@@ -78,15 +77,15 @@ export class SignupComponent implements OnInit {
 
     if (status === 201) {
       this.registrationFailed = false;
-      this.registrationMessage = 'User was registered successfully';
+      this.registrationMessage = String(SignupComponent.REG_SCSS_MSG);
       this.registrationForm = new SignupModel();
     } else if (status === 200) {
       this.registrationFailed = false;
-      this.registrationMessage = 'User was registered successfully';
+      this.registrationMessage = String(SignupComponent.REG_SCSS_MSG);
       this.registrationForm = new SignupModel();
     } else {
       this.registrationFailed = true;
-      this.registrationMessage = 'Registration failed! Please try again';
+      this.registrationMessage = String(SignupComponent.REG_FAIL_MSG);
       console.log('Registration Status : ' + status);
       console.log('Registration Failed : ' + this.registrationFailed);
       console.log('Registration Message: ' + this.registrationMessage);

@@ -17,19 +17,20 @@ export class SigninComponent extends ComponentBase {
 
   constructor(private authService: AuthService, private router: Router) {
     super(authService);
-    authService.resetAccess();
   }
 
   onSubmit(signinForm: SigninModel) {
     this.authService.signin(signinForm);
-    this.isLoggedIn$.subscribe(
-      (loggedIn: boolean) => {
-        this.signinForm.password = '';
-        if (loggedIn) {
+    this.isUnauthorized$().subscribe(
+      (unauthorized: boolean) => {
+        if (unauthorized) {
+          this.signinForm.password = '';
+        } else {
           this.signinForm = new SigninModel();
-          this.router.navigate(['/category']);
+          this.router.navigate([AuthService.secureHome]);
         }
-    });
+      }
+    );
   }
 
 }

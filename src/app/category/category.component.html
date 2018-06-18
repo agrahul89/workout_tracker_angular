@@ -10,7 +10,7 @@
         <input #addCategory type="text" class="form-control form-control-lg" placeholder="Add a new Category">
       </div>
       <div class="form-group col-4 col-md-3 col-lg-2">
-        <button class="btn btn-primary btn-block" (click)="add(addCategory.value)">
+        <button class="btn btn-primary btn-block" title="Add Category" (click)="add(addCategory.value)">
           <i class="fa fa-plus"></i>
         </button>
       </div>
@@ -40,17 +40,17 @@
           </div>
           <div class="buttons float-right">
             <!-- delete the category -->
-            <button class="btn btn-danger  rounded-circle mr-2" (click)="delete(category)"
+            <button class="btn btn-danger  rounded-circle mr-2" title="Delete Category" (click)="delete(category)"
             [ngClass]="category.editing?'hide':'show'">
               <i class="fa fa-times"></i>
             </button>
             <!-- change the category name -->
-            <button class="btn btn-primary rounded-circle mr-2" (click)="edit(category)"
+            <button class="btn btn-primary rounded-circle mr-2" title="Edit Category" (click)="edit(category)"
             [ngClass]="category.editing?'hide':'show'">
               <i class="fa fa-pencil"></i>
             </button>
             <!-- update the category -->
-            <button class="btn btn-success rounded-circle mr-2" (click)="update(category)"
+            <button class="btn btn-success rounded-circle mr-2" title="Update Category" (click)="update(category)"
             [ngClass]="category.editing?'show':'hide'">
               <i class="fa fa-check"></i>
             </button>

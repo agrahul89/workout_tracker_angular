@@ -28,26 +28,30 @@
             <div class="card-footer text-left">
               <h2 class="card-title">{{workout.category}}</h2>
               <h4 class="card-subtitle">{{workout.workout}}</h4>
-              <p class="card-text">{{workout.note}}</p>
             </div>
+            <ul class="list-group list-group-flush text-left">
+              <li class="list-group-item" *ngFor="let note of workout.getNotes()">
+                <p><em>{{note}}</em></p>
+              </li>
+            </ul>
 
             <div class="buttons float-right">
               <!-- delete the workout -->
-              <button class="btn btn-danger  rounded-circle mr-2" (click)="delete(workout)">
+              <button class="btn btn-danger  rounded-circle mr-2" title="Delete Workout" (click)="delete(workout)">
                 <i class="fa fa-times"></i>
               </button>
               <!-- change the workout name -->
-              <button class="btn btn-primary rounded-circle mr-2" (click)="edit(workout)"
+              <button class="btn btn-primary rounded-circle mr-2" title="Edit Workout" (click)="edit(workout)"
               [ngClass]="workout.end === undefined ? 'show' : 'hide'">
                 <i class="fa fa-pencil"></i>
               </button>
               <!-- start the workout -->
-              <button class="btn btn-success rounded-circle mr-2" (click)="start(workout)"
+              <button class="btn btn-success rounded-circle mr-2" title="Start Workout" (click)="start(workout)"
               [ngClass]="workout.start === undefined && workout.end === undefined ? 'show' : 'hide'">
                 <i class="fa fa-play"></i>
               </button>
               <!-- end the workout -->
-              <button class="btn btn-danger  rounded-circle mr-2" (click)="end(workout)"
+              <button class="btn btn-danger  rounded-circle mr-2" title="End Workout" (click)="end(workout)"
               [ngClass]="workout.start !== undefined && workout.end === undefined ? 'show' : 'hide'">
                 <i class="fa fa-stop"></i>
               </button>

@@ -7,7 +7,7 @@
     <small>{{registrationMessage}}</small>
   </div>
   <div class="alert alert-success" role="alert" [hidden]="registrationFailed || registrationMessage===''">
-    <small>{{registrationMessage}}. You can <a routerLink="/signin">Login</a> from here</small>
+    <small>{{registrationMessage}} ! Login <a routerLink="/signin"><u>here</u></a></small>
   </div>
   <form #signupForm="ngForm" novalidate (submit)="onSubmit()">
 

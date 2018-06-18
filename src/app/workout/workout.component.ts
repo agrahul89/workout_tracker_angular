@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class WorkoutComponent implements OnInit {
 
   private workouts: WorkoutModel[] = [
-    new WorkoutModel('15-min Sit-up', 'Sit-up', 'some descriptive text statement', 2.0),
+    new WorkoutModel('15-min Sit-up', '', 'some descriptive text statement', 2.0),
     new WorkoutModel('30-min Walk', 'Walk', 'hmm', 1.0),
     new WorkoutModel('10-min Swim', 'Swim', 'some description', 3.0),
     new WorkoutModel('10-min Jog', 'Jog', 'some description', 1.5),
@@ -48,7 +48,7 @@ export class WorkoutComponent implements OnInit {
 
   private end(workout: WorkoutModel) {
     workout.end = new Date();
-    workout.note = workout.note + '<br><b>Completed</b> : ' + workout.end;
+    workout.addNote(`Completed@ ${workout.end}`);
     this.update(workout);
   }
 
@@ -62,7 +62,7 @@ export class WorkoutComponent implements OnInit {
 
   private start(workout: WorkoutModel) {
     workout.start = new Date();
-    workout.note = workout.note + '<br><b>Started</b> : ' + workout.start;
+    workout.addNote(`Started@ ${workout.start}`);
     this.update(workout);
   }
 

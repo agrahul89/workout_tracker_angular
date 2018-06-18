@@ -4,7 +4,7 @@
     <span class="d-none d-lg-inline-block">{{title}}</span>
   </h4>
   <!-- Navigation post login screen -->
-  <nav id="secure-nav" class="float-right nav nav-pills" *ngIf="loggedIn">
+  <nav id="secure-nav" class="float-right nav nav-pills" *ngIf="isLoggedIn()">
     <a href="#" class="nav-item nav-link" routerLink="/workout" routerLinkActive="active-link">
         <i id="workout" class="fa fa-calendar-check-o" aria-hidden="true"></i>
         <label for="workout" class="d-none d-lg-inline-block">Workout</label>
@@ -24,7 +24,7 @@
     </a>
   </nav>
   <!-- Navigation for login screen -->
-  <nav id="public-nav" class="float-right nav nav-pills" *ngIf="!loggedIn">
+  <nav id="public-nav" class="float-right nav nav-pills" *ngIf="!isLoggedIn()">
     <a href="#" class="nav-item nav-link" routerLink="/signin" routerLinkActive="active-link">
       <i id="signin" class="fa fa-sign-in" aria-hidden="true"></i>
       <label for="signin" class="d-none d-lg-inline-block">Login</label>

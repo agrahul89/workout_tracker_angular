@@ -1,8 +1,8 @@
 <div class="signin">
 
   <h3 class="section-header">Login</h3>
-  <div class="alert alert-danger" role="alert" *ngIf="!loggedIn">
-    <small>Your previous login attempt was unsuccessful !!!</small>
+  <div class="alert alert-danger" role="alert" *ngIf="!isLoggedIn()">
+    <small>Your login attempt was unsuccessful !</small>
   </div>
   <form #loginForm="ngForm" novalidate (submit)="onSubmit(signinForm)">
     <div class="form-group">

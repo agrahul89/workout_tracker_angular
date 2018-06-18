@@ -10,32 +10,38 @@ import { ServiceBase } from './base/base-service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends ServiceBase implements CanActivate, OnInit {
+export class AuthService extends ServiceBase implements CanActivate {
 
-  private static AUTH_TOKEN: String;
+  private static PUBLIC_HOME: String = '/';
+  private static SECURE_HOME: String = '/category';
+
+  private authToken: String;
   private signinUrl: String = this.baseUrl + '/login';
   private logOutUrl: String = this.baseUrl + '/logout';
-  private loggedIn$ = new BehaviorSubject<boolean>(false);
+  private authenticated$ = new BehaviorSubject<boolean>(false);
 
   constructor(private restclient: HttpClient, private router: Router) {
     super(restclient);
   }
 
-  ngOnInit() {
-    // this.loggedIn$.next(false);
-  }
-
   get auth(): string {
-    return AuthService.AUTH_TOKEN.toString();
+    return this.authToken.valueOf();
   }
 
-  get isLoggedIn$(): Observable<boolean> {
-    return this.loggedIn$.asObservable();
+  static get publicHome(): string {
+    return AuthService.PUBLIC_HOME.valueOf();
   }
 
-  resetAccess() {
-    this.loggedIn$.next(false);
-    this.router.navigate(['/']);
+  static get secureHome(): string {
+    return AuthService.SECURE_HOME.valueOf();
+  }
+
+  isAuthenticated(): Observable<boolean> {
+    return this.authenticated$.asObservable();
+  }
+
+  private resetAuthToken() {
+    this.authToken = null;
   }
 
   signin(signinForm: SigninModel): void {
@@ -64,19 +70,20 @@ export class AuthService extends ServiceBase implements CanActivate, OnInit {
         },
         observe: 'response', reportProgress: false, responseType: 'json'
       });
-    this.resetAccess();
-    // TODO: implement signout()
+    this.resetAuthToken();
+    this.authenticated$.next(false);
   }
 
+  /* TODO: use AuthGuard implementation */
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.isLoggedIn$.pipe(
+    return this.isAuthenticated().pipe(
       takeLast(1),
       map((isLoggedIn: boolean) => {
         if (!isLoggedIn) {
-          this.router.navigate(['/']);
+          this.router.navigate([AuthService.publicHome]);
           return false;
         } else {
-          this.router.navigate(['/category']);
+          this.router.navigate([AuthService.secureHome]);
           return true;
         }
       })
@@ -84,12 +91,12 @@ export class AuthService extends ServiceBase implements CanActivate, OnInit {
   }
 
   private handleSignInError(error: HttpErrorResponse): void {
+    console.log('Authorization error :' + error.status);
     if (error.status && (error.status === 401 || error.status === 403)) {
-      this.loggedIn$.next(false);
-      this.router.navigate(['/']);
+      console.log('Unauthorized access denied');
+      console.log('Login Failed :' + error.status);
     }
-    console.log('Login Failed :' + error.status);
-    this.loggedIn$.next(false);
+    this.authenticated$.next(false);
   }
 
   private handleSignInResponse(response: HttpResponse<SigninModel>): void {
@@ -99,11 +106,11 @@ export class AuthService extends ServiceBase implements CanActivate, OnInit {
 
     if (status === 200 && response.body) {
       const output: SigninModel = response.body;
-      AuthService.AUTH_TOKEN = output.authToken;
-      this.loggedIn$.next(true);
+      this.authToken = String(output.authToken);
       console.log('Login Passed :' + status);
+      this.authenticated$.next(true);
     } else {
-      this.loggedIn$.next(false);
+      this.authenticated$.next(false);
       console.log('Login Failed :' + status);
     }
   }
