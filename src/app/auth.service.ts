@@ -25,7 +25,7 @@ export class AuthService extends ServiceBase implements CanActivate {
   }
 
   get auth(): string {
-    return this.authToken.valueOf();
+    return String(`Bearer ${this.authToken.valueOf()}`);
   }
 
   static get publicHome(): string {

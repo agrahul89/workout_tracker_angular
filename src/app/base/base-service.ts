@@ -3,9 +3,13 @@ import { Observable, throwError } from 'rxjs';
 
 export class ServiceBase {
 
-    baseUrl: String = 'http://localhost:8080/tracker';
+    private static BASE_URL: String = 'http://localhost:8080/tracker';
 
     constructor(private httpclient: HttpClient) { }
+
+    protected get baseUrl(): string {
+        return ServiceBase.BASE_URL.valueOf();
+    }
 
     handleError(error: HttpErrorResponse): Observable<never> {
         if (error.error instanceof ErrorEvent) {
