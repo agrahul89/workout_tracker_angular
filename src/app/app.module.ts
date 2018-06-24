@@ -10,6 +10,7 @@ import { SignupComponent } from './signup/signup.component';
 import { RestClientService } from './rest-client.service';
 import { WorkoutComponent } from './workout/workout.component';
 import { CategoryComponent } from './category/category.component';
+import { MomentModule } from 'ngx-moment';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CategoryComponent } from './category/category.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    MomentModule,
     ReactiveFormsModule,
     RoutingRoutes,
   ],
