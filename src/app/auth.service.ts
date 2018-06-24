@@ -13,7 +13,7 @@ import { ServiceBase } from './base/base-service';
 export class AuthService extends ServiceBase implements CanActivate {
 
   private static PUBLIC_HOME: String = '/';
-  private static SECURE_HOME: String = '/category';
+  private static SECURE_HOME: String = '/workout';
 
   private authToken: String;
   private signinUrl: String = this.baseUrl + '/login';
