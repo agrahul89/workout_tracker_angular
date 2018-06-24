@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { SignupModel } from './signup/signup-model';
 import { ServiceBase } from './base/base-service';
 import { CategoryModel } from './category/category-model';
+import { WorkoutModel } from './workout/workout-model';
 
 @Injectable()
 export class RestClientService extends ServiceBase {
@@ -15,6 +16,23 @@ export class RestClientService extends ServiceBase {
 
   constructor(private client: HttpClient) {
     super(client);
+  }
+
+  createCategory(category: string, authToken: string) {
+    return this.client.post(
+      this.categoryUrl.toString(),
+      `{"category" : "${category}"}`,
+      {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : authToken
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
+      }
+    );
   }
 
   deleteCategory(id: number, authToken: string) {
@@ -33,9 +51,41 @@ export class RestClientService extends ServiceBase {
     );
   }
 
+  updateCategory(category: CategoryModel, authToken: string) {
+    return this.client.put<CategoryModel>(
+      `${this.categoryUrl.toString()}/${category.id}`,
+      `{"id" : "${category.id}", "category" : "${category.category}"}`,
+      {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : authToken
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
+      }
+    );
+  }
+
   getCategories(authToken: string) {
     return this.client.get<CategoryModel[]>(
       this.categoryUrl.toString(),
+      {
+        headers: {
+          'Accept' : 'application/json',
+          'Authorization' : authToken
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
+      }
+    );
+  }
+
+  getWorkouts(authToken: string) {
+    return this.client.get<WorkoutModel[]>(
+      this.workoutUrl.toString(),
       {
         headers: {
           'Accept' : 'application/json',

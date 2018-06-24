@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
 import { CategoryModel } from './category-model';
 import { RestClientService } from '../rest-client.service';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-category',
@@ -27,7 +28,7 @@ export class CategoryComponent implements OnInit {
     this.retrieveAll(this.authService.auth);
     this.filterQuery$.pipe(
       debounceTime(400), distinctUntilChanged(),
-      map( filterQuery => this.filter(filterQuery))
+      map(filterQuery => this.filter(filterQuery))
     ).subscribe();
   }
 
@@ -35,31 +36,54 @@ export class CategoryComponent implements OnInit {
     if (category === '' || category === undefined || category === null) {
       console.log('Invalid category name :: ' + category);
     } else {
-      // TODO: call service to add category
-      this.categories.push(new CategoryModel(category));
+      this.restService.createCategory(category, this.authService.auth).subscribe(
+        res => {
+          const resource = document.createElement('a');
+          resource.href = res.headers.get('Location');
+          const pathItems = resource.pathname.split('/');
+          const id = pathItems[pathItems.length - 1];
+          this.categories.push(new CategoryModel(category, false, parseInt(id, 10)));
+          alert(`Category [${category}] created successfully`);
+        },
+        err => {
+          if (err.status === 401 || err.status === 403) {
+            console.log('Unauthorized access to category');
+          } else if (err.status === 400) {
+            console.log('Non existing category');
+          }
+          alert('Error creating category');
+        },
+        () => {
+          this.resetFilteredCategories();
+        }
+      );
     }
   }
 
   private delete(category: CategoryModel) {
-    this.restService.deleteCategory(category.id, this.authService.auth).subscribe(
-      res => {
-        if (res.status === 200) {
-          console.log(`Category #${category.id} deleted successfully`);
-          this.categories.splice(this.categories.indexOf(category), 1);
-        } else {
-          console.log(`Category #${category.id} was not deleted`);
-        }
-      },
-      err => {
-        if (err.status === 401 || err.status === 403) {
-          console.log('Unauthorized access to category');
-        } else if (err.status === 400) {
-          console.log('Non existing category');
-        }
-        console.log('Error deleting category');
-      },
-      () => this.resetFilteredCategories()
-    );
+    const confirmed = confirm('Deleting this category will also delete all workouts for this category');
+    if (confirmed) {
+      this.restService.deleteCategory(category.id, this.authService.auth).subscribe(
+        res => {
+          if (res.status === 200) {
+            console.log(`Category #${category.id} deleted successfully`);
+            alert(`Category [${category.category}] deleted successfully`);
+            this.categories.splice(this.categories.indexOf(category), 1);
+          } else {
+            console.log(`Category [#${category.category}] could not be deleted`);
+          }
+        },
+        err => {
+          if (err.status === 401 || err.status === 403) {
+            console.log('Unauthorized access to category');
+          } else if (err.status === 400) {
+            console.log('Non existing category');
+          }
+          alert('Error deleting category');
+        },
+        () => this.resetFilteredCategories()
+      );
+    }
   }
 
   private edit(category: CategoryModel) {
@@ -71,9 +95,9 @@ export class CategoryComponent implements OnInit {
     this.categories.forEach(
       (category: CategoryModel) => {
         const query = filterQuery === null || filterQuery === undefined
-                ? '' : filterQuery.trim().toLocaleLowerCase();
+          ? '' : filterQuery.trim().toLocaleLowerCase();
         const categoryName = category.category === null || category.category === undefined
-                ? '' : category.category.trim().toLocaleLowerCase();
+          ? '' : category.category.trim().toLocaleLowerCase();
         if (categoryName.startsWith(query)) {
           this.filteredCategories.push(category);
         }
@@ -103,15 +127,35 @@ export class CategoryComponent implements OnInit {
           console.log('Unauthorized access to category');
           this.categories.length = 0;
         }
-        console.log('Error accessing categories');
+        alert('Error accessing categories');
       },
       () => this.resetFilteredCategories()
     );
   }
 
   private update(category: CategoryModel) {
-    // TODO: call service to update category
-    category.editing = false;
+    this.restService.updateCategory(category, this.authService.auth).subscribe(
+      res => {
+        if (res.status === 200) {
+          console.log(`Category #${category.id} updated successfully`);
+          alert(`Category updated successfully to [${category.category}]`);
+          category.category = res.body.category;
+        } else if (res.status === 204) {
+          alert('Category is not available in databas');
+        } else {
+          console.log(`Category could not be updated to [${category.category}]`);
+        }
+      },
+      err => {
+        if (err.status === 401 || err.status === 403) {
+          console.log('Unauthorized access to category');
+        }
+        alert(`Error updating category to [${category.category}]`);
+      },
+      () => {
+        category.editing = false;
+      }
+    );
   }
 
 }
