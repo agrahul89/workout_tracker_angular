@@ -17,8 +17,8 @@
   <!-- list of workouts -->
   <ul class="list-unstyled form-row">
 
-    <li class="col-12 display-4 text-center text-muted" *ngIf="filteredWorkouts === undefined
-    || filteredWorkouts === null || filteredWorkouts.length &lt; 1">You're all caught up</li>
+    <li class="col-12 display-4 text-center text-muted" *ngIf="!filteredWorkouts
+    || filteredWorkouts.length &lt; 1">You're all caught up</li>
 
     <li class="col-12 col-lg-6" *ngFor="let workout of filteredWorkouts">
 
@@ -32,11 +32,11 @@
         <!-- workout name -->
         <div class="card-footer text-left">
           <h2 class="card-title">{{workout.category.category}}</h2>
-          <h4 class="card-subtitle">{{workout.workout}}</h4>
+          <h4 class="card-subtitle">{{workout.title}}</h4>
         </div>
         <ul class="list-group list-group-flush text-left">
-          <li class="list-group-item" *ngFor="let note of workout.getNotes()">
-            <em>{{note}}</em>
+          <li class="list-group-item" *ngFor="let workoutNote of workout.notes">
+            <em>{{workoutNote}}</em>
           </li>
         </ul>
 
@@ -45,20 +45,19 @@
           <button class="btn btn-danger  rounded-circle mr-2" title="Delete Workout" (click)="delete(workout)">
             <i class="fa fa-times"></i>
           </button>
-          <!-- TODO: Fix visibility of buttons -->
           <!-- change the workout name -->
           <button class="btn btn-primary rounded-circle mr-2" title="Edit Workout" (click)="edit(workout)"
-          *ngIf="workout.end === null && workout.end === undefined">
+          *ngIf="!workout.start && !workout.end">
             <i class="fa fa-pencil"></i>
           </button>
           <!-- start the workout -->
           <button class="btn btn-success rounded-circle mr-2" title="Start Workout" (click)="start(workout)"
-          *ngIf="workout.start !== null && workout.start !== undefined">
+          *ngIf="!workout.start && !workout.end">
             <i class="fa fa-play"></i>
           </button>
           <!-- end the workout -->
           <button class="btn btn-danger  rounded-circle mr-2" title="End Workout" (click)="end(workout)"
-          *ngIf="workout.end === null || workout.end === undefined">
+          *ngIf="workout.start && !workout.end">
             <i class="fa fa-stop"></i>
           </button>
         </div>

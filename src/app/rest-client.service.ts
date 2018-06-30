@@ -11,8 +11,8 @@ import { WorkoutModel } from './workout/workout-model';
 export class RestClientService extends ServiceBase {
 
   private categoryUrl: String = this.baseUrl + '/category';
-  private signupUrl: String = this.baseUrl + '/registration';
-  private workoutUrl: String = this.baseUrl + '/workout';
+  private   signupUrl: String = this.baseUrl + '/registration';
+  private  workoutUrl: String = this.baseUrl + '/workout';
 
   constructor(private client: HttpClient) {
     super(client);
@@ -51,10 +51,9 @@ export class RestClientService extends ServiceBase {
     );
   }
 
-  updateCategory(category: CategoryModel, authToken: string) {
-    return this.client.put<CategoryModel>(
-      `${this.categoryUrl.toString()}/${category.id}`,
-      `{"id" : "${category.id}", "category" : "${category.category}"}`,
+  deleteWorkout(id: number, authToken: string) {
+    return this.client.delete(
+      `${this.workoutUrl.toString()}/${id}`,
       {
         headers: {
           'Content-Type' : 'application/json',
@@ -121,6 +120,40 @@ export class RestClientService extends ServiceBase {
       {
         headers: {
           'Accept' : 'application/json',
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
+      }
+    );
+  }
+
+  updateCategory(category: CategoryModel, authToken: string) {
+    return this.client.put<CategoryModel>(
+      `${this.categoryUrl.toString()}/${category.id}`,
+      `{"id" : "${category.id}", "category" : "${category.category}"}`,
+      {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : authToken
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
+      }
+    );
+  }
+
+  updateWorkout(workout: WorkoutModel, authToken: string) {
+    return this.client.put<WorkoutModel>(
+      `${this.workoutUrl.toString()}/${workout.id}`,
+      JSON.stringify(workout),
+      {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : authToken
         },
         observe: 'response',
         reportProgress: false,

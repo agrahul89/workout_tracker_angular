@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { RestClientService } from '../rest-client.service';
 import { WorkoutModel } from './workout-model';
+import { CategoryModel } from '../category/category-model';
 
 @Component({
   selector: 'app-workout',
@@ -33,15 +34,23 @@ export class WorkoutComponent implements OnInit {
   }
 
   static getFormatForTimestamp(): string {
-    return this.getFormatForDate() + ' ' + this.getFormatForTime();
+    return WorkoutComponent.getFormatForDate() + ' ' + WorkoutComponent.getFormatForTime();
   }
 
-  static getStartedAt(date: Date): string {
-      return `Started@ ${moment(date).format(WorkoutComponent.getFormatForTime())}`;
+  static getFormatForTimestampWithZone(): string {
+    return WorkoutComponent.getFormatForDate() + ' ' + WorkoutComponent.getFormatForTime() + ' Z';
   }
 
   static getCompletedAt(date: Date): string {
-      return `Completed@ ${moment(date).format(WorkoutComponent.getFormatForTime())}`;
+    const format = moment(date).isBefore(moment().startOf('day')) ?
+      WorkoutComponent.getFormatForTimestamp() : WorkoutComponent.getFormatForTime();
+    return `Completed@ ${moment(date).format(format)}`;
+  }
+
+  static getStartedAt(date: Date): string {
+    const format = moment(date).isBefore(moment().startOf('day')) ?
+      WorkoutComponent.getFormatForTimestamp() : WorkoutComponent.getFormatForTime();
+    return `Started@ ${moment(date).format(format)}`;
   }
 
   ngOnInit() {
@@ -52,26 +61,45 @@ export class WorkoutComponent implements OnInit {
     ).subscribe();
   }
 
-  private getFormatForTimestampWithZone(): string {
-    return WorkoutComponent.getFormatForDate() + ' ' + WorkoutComponent.getFormatForTime() + ' Z';
-  }
-
   private add(workout: WorkoutModel) {
-    if (workout === undefined || workout === null) {
-      console.log('Invalid workout data :: ' + workout);
-    } else {
+    if (workout) {
       // TODO: call service to add workout
       this.workouts.push(workout);
+    } else {
+      console.log('Invalid workout data :: ' + workout);
     }
+  }
+
+  private clone(workout: WorkoutModel): WorkoutModel {
+    const category = new CategoryModel(workout.category.category, false, workout.category.id);
+    return new WorkoutModel(workout.title, category, workout.note, workout.burnrate, false,
+      workout.start, workout.end, [], workout.id);
   }
 
   private delete(workout: WorkoutModel) {
-    // TODO: call service to delete workout
-    const index: number = this.workouts.indexOf(workout);
-    if (index !== -1) {
-        this.workouts.splice(index, 1);
+    const confirmed = confirm('Do you really want to delete this workout?');
+    if (confirmed) {
+      this.restService.deleteWorkout(workout.id, this.authService.auth).subscribe(
+        res => {
+          if (res.status === 200) {
+            console.log(`Workout #${workout.id} deleted successfully`);
+            this.workouts.splice(this.workouts.indexOf(workout), 1);
+            alert(`Workout [${workout.title}] deleted successfully`);
+          } else {
+            console.log(`Workout [#${workout.title}] could not be deleted`);
+          }
+        },
+        err => {
+          if (err.status === 401 || err.status === 403) {
+            console.log('Unauthorized access to workout');
+          } else if (err.status === 400) {
+            console.log('Non existing workout');
+          }
+          alert('Error deleting workout');
+        },
+        () => this.resetFilteredWorkouts()
+      );
     }
-    console.log(this.workouts.length);
   }
 
   private edit(workout: WorkoutModel) {
@@ -88,11 +116,9 @@ export class WorkoutComponent implements OnInit {
     this.filteredWorkouts.length = 0;
     this.workouts.forEach(
       (workout: WorkoutModel) => {
-        const query = filterQuery === null || filterQuery === undefined
-          ? '' : filterQuery.trim().toLocaleLowerCase();
-        const workoutName = workout.workout === null || workout.workout === undefined
-          ? '' : workout.workout.trim().toLocaleLowerCase();
-        if (workoutName.startsWith(query)) {
+        const query = filterQuery ? filterQuery.trim().toLocaleLowerCase() : '';
+        const title = workout.title ? workout.title.trim().toLocaleLowerCase() : '';
+        if (title.indexOf(query) !== -1) {
           this.filteredWorkouts.push(workout);
         }
       }
@@ -109,9 +135,10 @@ export class WorkoutComponent implements OnInit {
   private retrieveAll(authToken: string): void {
     this.restService.getWorkouts(authToken).subscribe(
       res => {
-        // TODO: fix model data assignment
         if (res.status === 200 && res.body) {
-          this.workouts = res.body;
+          Array.from(res.body).forEach((workout: WorkoutModel) => {
+            this.workouts.push(this.clone(workout));
+          });
         } else if (res.status === 204) {
           console.log('No workouts found');
           this.workouts.length = 0;
@@ -135,8 +162,34 @@ export class WorkoutComponent implements OnInit {
   }
 
   private update(workout: WorkoutModel) {
-    // TODO: call service to update workout
-    workout.editing = false;
+    if (workout && workout.title && workout.category && workout.category.category) {
+      this.restService.updateWorkout(workout, this.authService.auth).subscribe(
+        res => {
+          if (res.status === 200) {
+            console.log(`Workout #${workout.id} updated successfully`);
+            this.workouts.splice(this.workouts.indexOf(workout), 1);
+            this.workouts.push(this.clone(res.body));
+            alert(`Workout #${workout.id} updated successfully`);
+          } else if (res.status === 204) {
+            alert('Workout is not available in database');
+          } else {
+            console.log(`Workout #${workout.id} could not be updated`);
+          }
+        },
+        err => {
+          if (err.status === 401 || err.status === 403) {
+            console.log('Unauthorized access to workouts');
+          }
+          alert(`Error updating workout #${workout.id}`);
+          if (err.error) {
+            err.error.messages.forEach(error => {
+              console.log(error);
+            });
+          }
+        },
+        () => workout.editing = false
+      );
+    }
   }
 
 }
