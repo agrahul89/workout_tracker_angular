@@ -15,11 +15,11 @@
       </div>
       <div class="form-group col-9 col-lg-10">
         <input #addCategory type="text" class="form-control form-control-lg" placeholder="Add a new Category"
-        (keyup)= "addCategoryBtn.disabled = $event.target.value === ''">
+        (keyup)= "addCategoryBtn.disabled = $event.target.value.trim() === ''">
       </div>
       <div class="form-group col-3 col-lg-2">
         <button #addCategoryBtn class="btn btn-primary btn-block" title="Add Category"
-        (click)="add(addCategory.value)" [disabled]="true">
+        (click)="add(addCategory.value.trim())" [disabled]="true">
           <i class="fa fa-plus"></i>
         </button>
       </div>
@@ -44,8 +44,8 @@
   <!-- list of categories -->
   <ul class="list-unstyled form-row">
 
-    <li class="col-12 display-4 text-center text-muted" *ngIf="filteredCategories === undefined
-    || filteredCategories === null || filteredCategories.length &lt; 1">You're all caught up</li>
+    <li class="col-12 display-4 text-center text-muted" *ngIf="!filteredCategories
+    || filteredCategories.length &lt; 1">You're all caught up</li>
 
     <li class="col-12 col-lg-6" *ngFor="let category of filteredCategories">
 

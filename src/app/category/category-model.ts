@@ -6,14 +6,14 @@ export class CategoryModel {
         public id?: number) { }
 
     startsWith(query: string): boolean {
-        if (query !== null || query !== undefined) {
+        if (query) {
             return this.category.startsWith(query.trim());
         }
         return false;
     }
 
     matches(category: string): boolean {
-        const query = category === null || category === undefined ? '' : category.trim();
+        const query = category ? category.trim() : '';
         return this.category === query;
     }
 

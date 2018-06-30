@@ -33,9 +33,7 @@ export class CategoryComponent implements OnInit {
   }
 
   private add(category: string) {
-    if (category === '' || category === undefined || category === null) {
-      console.log('Invalid category name :: ' + category);
-    } else {
+    if (category) {
       this.restService.createCategory(category, this.authService.auth).subscribe(
         res => {
           const resource = document.createElement('a');
@@ -57,6 +55,8 @@ export class CategoryComponent implements OnInit {
           this.resetFilteredCategories();
         }
       );
+    } else {
+      console.log('Invalid category name :: ' + category);
     }
   }
 
@@ -94,10 +94,8 @@ export class CategoryComponent implements OnInit {
     this.filteredCategories.length = 0;
     this.categories.forEach(
       (category: CategoryModel) => {
-        const query = filterQuery === null || filterQuery === undefined
-          ? '' : filterQuery.trim().toLocaleLowerCase();
-        const categoryName = category.category === null || category.category === undefined
-          ? '' : category.category.trim().toLocaleLowerCase();
+        const query = filterQuery ? filterQuery.trim().toLocaleLowerCase() : '';
+        const categoryName = category.category ? category.category.trim().toLocaleLowerCase() : '';
         if (categoryName.startsWith(query)) {
           this.filteredCategories.push(category);
         }
@@ -134,28 +132,30 @@ export class CategoryComponent implements OnInit {
   }
 
   private update(category: CategoryModel) {
-    this.restService.updateCategory(category, this.authService.auth).subscribe(
-      res => {
-        if (res.status === 200) {
-          console.log(`Category #${category.id} updated successfully`);
-          alert(`Category updated successfully to [${category.category}]`);
-          category.category = res.body.category;
-        } else if (res.status === 204) {
-          alert('Category is not available in databas');
-        } else {
-          console.log(`Category could not be updated to [${category.category}]`);
+    if (category && category.category && category.category.trim()) {
+      this.restService.updateCategory(category, this.authService.auth).subscribe(
+        res => {
+          if (res.status === 200) {
+            console.log(`Category #${category.id} updated successfully`);
+            alert(`Category updated successfully to [${category.category}]`);
+            category.category = res.body.category;
+          } else if (res.status === 204) {
+            alert('Category is not available in database');
+          } else {
+            console.log(`Category could not be updated to [${category.category}]`);
+          }
+        },
+        err => {
+          if (err.status === 401 || err.status === 403) {
+            console.log('Unauthorized access to category');
+          }
+          alert(`Error updating category [${category.id}]`);
+        },
+        () => {
+          category.editing = false;
         }
-      },
-      err => {
-        if (err.status === 401 || err.status === 403) {
-          console.log('Unauthorized access to category');
-        }
-        alert(`Error updating category to [${category.category}]`);
-      },
-      () => {
-        category.editing = false;
-      }
-    );
+      );
+    }
   }
 
 }
