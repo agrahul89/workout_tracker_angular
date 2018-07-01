@@ -1,8 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, last, take, takeLast } from 'rxjs/operators';
 
 import { ServiceBase } from '../_base/base-service';
 import { SigninModel } from '../signin/signin-model';
@@ -10,7 +9,7 @@ import { SigninModel } from '../signin/signin-model';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends ServiceBase implements CanActivate {
+export class AuthService extends ServiceBase {
 
   private static PUBLIC_HOME: String = '/';
   private static SECURE_HOME: String = '/workout';
@@ -72,21 +71,6 @@ export class AuthService extends ServiceBase implements CanActivate {
       });
     this.resetAuthToken();
     this.authenticated$.next(false);
-  }
-
-  /* TODO: use AuthGuard implementation */
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.isAuthenticated().pipe(
-      takeLast(1),
-      map((isLoggedIn: boolean) => {
-        if (isLoggedIn) {
-          this.router.navigate([AuthService.secureHome]);
-        } else {
-          this.router.navigate([AuthService.publicHome]);
-        }
-        return isLoggedIn;
-      })
-    );
   }
 
   private handleSignInError(error: HttpErrorResponse): void {

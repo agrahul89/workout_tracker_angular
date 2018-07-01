@@ -1,6 +1,5 @@
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
-import { OnInit } from '@angular/core';
 
 export class ComponentBase {
 
