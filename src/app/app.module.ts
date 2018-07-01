@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { RoutingRoutes } from './routing.routing';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
-import { RestClientService } from './rest-client.service';
+import { RestClientService } from './_services/rest-client.service';
 import { WorkoutComponent } from './workout/workout.component';
 import { CategoryComponent } from './category/category.component';
 import { MomentModule } from 'ngx-moment';

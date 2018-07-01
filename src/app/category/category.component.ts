@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { AuthService } from '../auth.service';
+import { AuthService } from '../_services/auth.service';
 import { CategoryModel } from './category-model';
-import { RestClientService } from '../rest-client.service';
+import { RestClientService } from '../_services/rest-client.service';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 

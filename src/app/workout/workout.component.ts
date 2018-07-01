@@ -4,8 +4,8 @@ import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { AuthService } from '../auth.service';
-import { RestClientService } from '../rest-client.service';
+import { AuthService } from '../_services/auth.service';
+import { RestClientService } from '../_services/rest-client.service';
 import { WorkoutModel } from './workout-model';
 import { CategoryModel } from '../category/category-model';
 

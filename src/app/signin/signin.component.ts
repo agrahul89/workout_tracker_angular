@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { SigninModel } from './signin-model';
-import { AuthService } from '../auth.service';
-import { ComponentBase } from '../base/base-component';
+import { AuthService } from '../_services/auth.service';
+import { ComponentBase } from '../_base/base-component';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({

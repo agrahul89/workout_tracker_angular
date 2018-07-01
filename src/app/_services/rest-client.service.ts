@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
-import { SignupModel } from './signup/signup-model';
-import { ServiceBase } from './base/base-service';
-import { CategoryModel } from './category/category-model';
-import { WorkoutModel } from './workout/workout-model';
+import { ServiceBase } from '../_base/base-service';
+import { CategoryModel } from '../category/category-model';
+import { SignupModel } from '../signup/signup-model';
+import { WorkoutModel } from '../workout/workout-model';
+
 
 @Injectable()
 export class RestClientService extends ServiceBase {

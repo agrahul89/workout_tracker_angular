@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import { RestClientService } from '../rest-client.service';
+import { RestClientService } from '../_services/rest-client.service';
 import { SignupModel } from './signup-model';
 
 @Component({

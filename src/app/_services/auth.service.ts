@@ -4,8 +4,8 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, last, take, takeLast } from 'rxjs/operators';
 
-import { SigninModel } from './signin/signin-model';
-import { ServiceBase } from './base/base-service';
+import { ServiceBase } from '../_base/base-service';
+import { SigninModel } from '../signin/signin-model';
 
 @Injectable({
   providedIn: 'root'
@@ -79,13 +79,12 @@ export class AuthService extends ServiceBase implements CanActivate {
     return this.isAuthenticated().pipe(
       takeLast(1),
       map((isLoggedIn: boolean) => {
-        if (!isLoggedIn) {
-          this.router.navigate([AuthService.publicHome]);
-          return false;
-        } else {
+        if (isLoggedIn) {
           this.router.navigate([AuthService.secureHome]);
-          return true;
+        } else {
+          this.router.navigate([AuthService.publicHome]);
         }
+        return isLoggedIn;
       })
     );
   }
