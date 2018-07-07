@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { RoutingRoutes } from './routing.routing';
@@ -11,20 +12,23 @@ import { RestClientService } from './_services/rest-client.service';
 import { WorkoutComponent } from './workout/workout.component';
 import { CategoryComponent } from './category/category.component';
 import { MomentModule } from 'ngx-moment';
+import { SelfClosingAlertComponent } from './alerts/self-closing-alert/self-closing-alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CategoryComponent,
+    SelfClosingAlertComponent,
     SigninComponent,
     SignupComponent,
-    WorkoutComponent,
-    CategoryComponent
+    WorkoutComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     MomentModule,
+    NgbModule.forRoot(),
     ReactiveFormsModule,
     RoutingRoutes,
   ],
