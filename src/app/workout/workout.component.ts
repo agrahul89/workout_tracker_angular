@@ -8,6 +8,8 @@ import { AuthService } from '../_services/auth.service';
 import { RestClientService } from '../_services/rest-client.service';
 import { WorkoutModel } from './workout-model';
 import { CategoryModel } from '../category/category-model';
+import { NgbModal } from '../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import { WorkoutPlusComponent } from '../workout-plus/workout-plus.component';
 
 @Component({
   selector: 'app-workout',
@@ -23,7 +25,9 @@ export class WorkoutComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private restService: RestClientService,
-    private router: Router) { }
+    private router: Router,
+    private modalService: NgbModal,
+  ) { }
 
   static getFormatForDate(): string {
     return 'DD MMM YYYY';
@@ -62,6 +66,7 @@ export class WorkoutComponent implements OnInit {
   }
 
   private add(workout: WorkoutModel) {
+    this.openTemplate('Add', null);
     if (workout) {
       // TODO: call service to add workout
       this.workouts.push(workout);
@@ -104,6 +109,7 @@ export class WorkoutComponent implements OnInit {
 
   private edit(workout: WorkoutModel) {
     workout.editing = true;
+    this.openTemplate('Update', workout);
   }
 
   private end(workout: WorkoutModel) {
@@ -122,6 +128,18 @@ export class WorkoutComponent implements OnInit {
           this.filteredWorkouts.push(workout);
         }
       }
+    );
+  }
+
+  private openTemplate(action: string, workout?: WorkoutModel) {
+    const modalRef = this.modalService.open(WorkoutPlusComponent, { centered: true, size: 'sm' });
+    modalRef.componentInstance.action = action;
+    if (workout) {
+      modalRef.componentInstance.workout = workout;
+    }
+    modalRef.result.then(
+      result => alert(`Closed result :: ${result}`),
+      reason => alert(`Closed reason :: ${reason}`),
     );
   }
 

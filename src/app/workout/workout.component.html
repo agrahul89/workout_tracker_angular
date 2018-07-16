@@ -1,7 +1,7 @@
 <div class="workout">
   <h3 class="section-header">Workout</h3>
   <div class="position-fixed fixed-bottom text-right mb-3 mr-3">
-    <button class="btn btn-lg btn-success rounded-circle">
+    <button class="btn btn-lg btn-success rounded-circle" (click)="add(null)">
       <i class="fa fa-plus"></i>
     </button>
   </div>
@@ -18,10 +18,9 @@
   <ul class="list-unstyled form-row">
 
     <li class="col-12 display-4 text-center text-muted" *ngIf="!filteredWorkouts
-    || filteredWorkouts.length &lt; 1">You're all caught up</li>
+      || filteredWorkouts.length &lt; 1">You're all caught up</li>
 
     <li class="col-12 col-lg-6" *ngFor="let workout of filteredWorkouts">
-
       <div class="card bg-light text-center" id="workout-{{filteredWorkouts.indexOf(workout)}}">
 
         <!-- workout icon -->
