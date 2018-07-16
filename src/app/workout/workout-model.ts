@@ -1,6 +1,5 @@
-import * as moment from 'moment';
-import { WorkoutComponent } from './workout.component';
 import { CategoryModel } from '../category/category-model';
+import { WorkoutService } from '../_services/workout.service';
 
 export class WorkoutModel {
 
@@ -20,10 +19,10 @@ export class WorkoutModel {
             this.notes.push(note);
         }
         if (start) {
-            this.notes.push(WorkoutComponent.getStartedAt(start));
+            this.notes.push(WorkoutService.getStartedAt(start));
         }
         if (end) {
-            this.notes.push(WorkoutComponent.getCompletedAt(end));
+            this.notes.push(WorkoutService.getCompletedAt(end));
         }
     }
 

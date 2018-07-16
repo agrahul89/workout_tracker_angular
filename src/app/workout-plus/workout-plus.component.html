@@ -15,12 +15,16 @@
       <textarea class="form-control" id="notes" rows="3">{{workout?.note}}</textarea>
     </div>
     <div class="form-group">
-      <label for="burnt-calories">Calories burnt per minute</label>
+      <label for="burnt-calories">Calories burnt per minute
+        <a href="https://whatscookingamerica.net/Information/CalorieBurnChart.htm#tablepress-26" target="_blank">
+          <span class="fa fa-external-link-square"></span>
+        </a>
+      </label>
       <div class="form-row">
         <input type="range" class="custom-range col" id="burnt-calories"
           min="0" max="20" step="0.1" [value]="workout?.burnrate"
           (input)="workout.burnrate = $event.target.value">
-        <span class="custom-range-value col-2 col-md-1">{{workout?.burnrate}}</span>
+        <span class="custom-range-value col-2">{{workout?.burnrate}}</span>
       </div>
     </div>
     <div class="form-group">
@@ -34,5 +38,5 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary w-50">{{this?.action}} Workout</button>
+  <button type="button" class="btn btn-primary btn-block">{{this?.action}} Workout</button>
 </div>

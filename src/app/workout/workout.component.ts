@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { NgbModal } from '../../../node_modules/@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../_services/auth.service';
 import { RestClientService } from '../_services/rest-client.service';
-import { WorkoutModel } from './workout-model';
+import { WorkoutService } from '../_services/workout.service';
 import { CategoryModel } from '../category/category-model';
-import { NgbModal } from '../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import { WorkoutModel } from './workout-model';
 import { WorkoutPlusComponent } from '../workout-plus/workout-plus.component';
 
 @Component({
@@ -28,34 +28,6 @@ export class WorkoutComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
   ) { }
-
-  static getFormatForDate(): string {
-    return 'DD MMM YYYY';
-  }
-
-  static getFormatForTime(): string {
-    return 'HH:mm:ss';
-  }
-
-  static getFormatForTimestamp(): string {
-    return WorkoutComponent.getFormatForDate() + ' ' + WorkoutComponent.getFormatForTime();
-  }
-
-  static getFormatForTimestampWithZone(): string {
-    return WorkoutComponent.getFormatForDate() + ' ' + WorkoutComponent.getFormatForTime() + ' Z';
-  }
-
-  static getCompletedAt(date: Date): string {
-    const format = moment(date).isBefore(moment().startOf('day')) ?
-      WorkoutComponent.getFormatForTimestamp() : WorkoutComponent.getFormatForTime();
-    return `Completed@ ${moment(date).format(format)}`;
-  }
-
-  static getStartedAt(date: Date): string {
-    const format = moment(date).isBefore(moment().startOf('day')) ?
-      WorkoutComponent.getFormatForTimestamp() : WorkoutComponent.getFormatForTime();
-    return `Started@ ${moment(date).format(format)}`;
-  }
 
   ngOnInit() {
     this.retrieveAll(this.authService.auth);
@@ -114,7 +86,7 @@ export class WorkoutComponent implements OnInit {
 
   private end(workout: WorkoutModel) {
     workout.end = new Date();
-    workout.addNote(WorkoutComponent.getCompletedAt(workout.end));
+    workout.addNote(WorkoutService.getCompletedAt(workout.end));
     this.update(workout);
   }
 
@@ -175,7 +147,7 @@ export class WorkoutComponent implements OnInit {
 
   private start(workout: WorkoutModel) {
     workout.start = new Date();
-    workout.addNote(WorkoutComponent.getStartedAt(workout.start));
+    workout.addNote(WorkoutService.getStartedAt(workout.start));
     this.update(workout);
   }
 
