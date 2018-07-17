@@ -1,7 +1,7 @@
 <div class="workout">
   <h3 class="section-header">Workout</h3>
   <div class="position-fixed fixed-bottom text-right mb-3 mr-3">
-    <button class="btn btn-lg btn-success rounded-circle" (click)="add(null)">
+    <button class="btn btn-lg btn-success rounded-circle" (click)="openTemplate('Add', null)">
       <i class="fa fa-plus"></i>
     </button>
   </div>
@@ -45,7 +45,7 @@
             <i class="fa fa-times"></i>
           </button>
           <!-- change the workout name -->
-          <button class="btn btn-primary rounded-circle mr-2" title="Edit Workout" (click)="edit(workout)"
+          <button class="btn btn-primary rounded-circle mr-2" title="Edit Workout" (click)="openTemplate('Update', workout)"
           *ngIf="!workout.start && !workout.end">
             <i class="fa fa-pencil"></i>
           </button>

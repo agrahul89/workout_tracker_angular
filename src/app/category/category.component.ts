@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-
-import { AuthService } from '../_services/auth.service';
-import { CategoryModel } from './category-model';
-import { RestClientService } from '../_services/rest-client.service';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { FormGroup } from '@angular/forms';
+
+import { CategoryModel } from './category-model';
+import { AuthService } from '../_services/auth.service';
+import { CategoryService } from '../_services/category.service';
+import { RestClientService } from '../_services/rest-client.service';
 
 @Component({
   selector: 'app-category',
@@ -114,7 +114,9 @@ export class CategoryComponent implements OnInit {
     this.restService.getCategories(authToken).subscribe(
       res => {
         if (res.status === 200 && res.body) {
-          this.categories = res.body;
+          Array.from(res.body).forEach((category: CategoryModel) => {
+            this.categories.push(CategoryService.clone(category));
+          });
         } else if (res.status === 204) {
           console.log('No categories found');
           this.categories.length = 0;

@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WorkoutModel } from '../workout/workout-model';
 import { NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { RestClientService } from '../_services/rest-client.service';
-import { AuthService } from '../_services/auth.service';
+
 import { CategoryModel } from '../category/category-model';
+import { WorkoutModel } from '../workout/workout-model';
+import { AuthService } from '../_services/auth.service';
+import { CategoryService } from '../_services/category.service';
+import { RestClientService } from '../_services/rest-client.service';
 
 @Component({
   selector: 'app-workout-plus',
@@ -17,28 +19,34 @@ export class WorkoutPlusComponent implements OnInit {
   protected categories: CategoryModel[] = [];
 
   constructor(
-    private ngbModal: NgbActiveModal,
+    private activeModal: NgbActiveModal,
     private authService: AuthService,
     private restService: RestClientService) { }
 
   ngOnInit() {
+    if (!this.workout) {
+      this.workout = new WorkoutModel('', new CategoryModel(null), '', 0.0, false);
+    }
     this.restService.getCategories(this.authService.auth).subscribe(
       res => {
         if (res.status === 200 && res.body) {
-          this.categories = res.body;
+          Array.from(res.body).forEach((category: CategoryModel) => {
+            this.categories.push(CategoryService.clone(category));
+          });
         } else if (res.status === 204) {
           console.log('No categories found');
           this.categories.length = 0;
         }
-      }
+      },
     );
-    if (!this.workout) {
-      this.workout = new WorkoutModel('', null, '', 0.0, false);
-    }
   }
 
-  dismiss(reason) {
-    this.ngbModal.close(reason);
+  close() {
+    return this.activeModal.close(this.workout);
+  }
+
+  dismiss() {
+    this.activeModal.dismiss();
   }
 
 }

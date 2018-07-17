@@ -1,42 +1,53 @@
 <div class="modal-header">
   <h4 class="modal-title" id="modal-basic-title">{{this?.action}} Workout</h4>
-  <button type="button" class="close" aria-label="Close" (click)="dismiss('dismissed')">
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
     <span class="fa fa-times" aria-hidden="true"></span>
   </button>
 </div>
+
 <div class="modal-body">
   <form #workoutplus="ngForm" novalidate>
+
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" [value]="workout?.title">
+      <input type="text" class="form-control" id="title" name="title" placeholder="Summary for workout"
+      [value]="workout?.title" [(ngModel)]="workout.title" #title>
     </div>
+
     <div class="form-group">
       <label for="notes">Notes</label>
-      <textarea class="form-control" id="notes" rows="3">{{workout?.note}}</textarea>
+      <textarea class="form-control" id="note" name="note" rows="3"
+      placeholder="You can put notes for yourself here"
+      [(ngModel)]="workout.note" #note>{{workout?.note}}</textarea>
     </div>
+
     <div class="form-group">
-      <label for="burnt-calories">Calories burnt per minute
-        <a href="https://whatscookingamerica.net/Information/CalorieBurnChart.htm#tablepress-26" target="_blank">
-          <span class="fa fa-external-link-square"></span>
-        </a>
+      <label for="burnrate">Calories burnt per minute
+        <a href="https://whatscookingamerica.net/Information/CalorieBurnChart.htm#tablepress-26"
+          target="_blank"><span class="fa fa-external-link-square"></span></a>
       </label>
       <div class="form-row">
-        <input type="range" class="custom-range col" id="burnt-calories"
-          min="0" max="20" step="0.1" [value]="workout?.burnrate"
-          (input)="workout.burnrate = $event.target.value">
+        <input type="range" class="custom-range col" id="burnrate" name="burnrate" min="0" max="10" step="0.1"
+        [value]="workout?.burnrate" (input)="workout.burnrate = $event.target.value"
+        [(ngModel)]="workout.burnrate" #burnrate>
         <span class="custom-range-value col-2">{{workout?.burnrate}}</span>
       </div>
     </div>
+
     <div class="form-group">
       <label for="categories">Categories</label>
-      <select class="form-control" id="categories">
-        <option *ngFor="let category of categories"
-          [selected]="workout?.category?.id === category?.id"
-          [value]="category?.id">{{category?.category}}</option>
+      <!-- <select class="form-control" id="category" name="category"
+      [(ngModel)]="workout.category" #category> -->
+      <select class="form-control" id="category" name="category"
+      (change)="workout.category = categories[$event.target.selectedIndex]">
+        <option *ngFor="let category of categories" [ngValue]="category.id"
+        [selected]="category?.id===workout?.category?.id">{{category?.category}}</option>
       </select>
     </div>
+
   </form>
 </div>
+
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary btn-block">{{this?.action}} Workout</button>
+  <button type="button" class="btn btn-primary btn-block" (click)="close()">{{this?.action}} Workout</button>
 </div>

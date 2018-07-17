@@ -38,22 +38,15 @@ export class WorkoutComponent implements OnInit {
   }
 
   private add(workout: WorkoutModel) {
-    this.openTemplate('Add', null);
     if (workout) {
       // TODO: call service to add workout
       this.workouts.push(workout);
     } else {
-      console.log('Invalid workout data :: ' + workout);
+      console.log(`Invalid workout data :: ${workout}`);
     }
   }
 
-  private clone(workout: WorkoutModel): WorkoutModel {
-    const category = new CategoryModel(workout.category.category, false, workout.category.id);
-    return new WorkoutModel(workout.title, category, workout.note, workout.burnrate, false,
-      workout.start, workout.end, [], workout.id);
-  }
-
-  private delete(workout: WorkoutModel) {
+  protected delete(workout: WorkoutModel) {
     const confirmed = confirm('Do you really want to delete this workout?');
     if (confirmed) {
       this.restService.deleteWorkout(workout.id, this.authService.auth).subscribe(
@@ -81,16 +74,16 @@ export class WorkoutComponent implements OnInit {
 
   private edit(workout: WorkoutModel) {
     workout.editing = true;
-    this.openTemplate('Update', workout);
+    this.update(workout);
   }
 
-  private end(workout: WorkoutModel) {
+  protected end(workout: WorkoutModel) {
     workout.end = new Date();
     workout.addNote(WorkoutService.getCompletedAt(workout.end));
     this.update(workout);
   }
 
-  private filter(filterQuery: String): void {
+  protected filter(filterQuery: String): void {
     this.filteredWorkouts.length = 0;
     this.workouts.forEach(
       (workout: WorkoutModel) => {
@@ -103,15 +96,20 @@ export class WorkoutComponent implements OnInit {
     );
   }
 
-  private openTemplate(action: string, workout?: WorkoutModel) {
-    const modalRef = this.modalService.open(WorkoutPlusComponent, { centered: true, size: 'sm' });
+  protected openTemplate(action: string, workout?: WorkoutModel): void {
+    const modalRef = this.modalService.open(WorkoutPlusComponent, { centered: true });
     modalRef.componentInstance.action = action;
     if (workout) {
       modalRef.componentInstance.workout = workout;
     }
     modalRef.result.then(
-      result => alert(`Closed result :: ${result}`),
-      reason => alert(`Closed reason :: ${reason}`),
+      output => {
+        if (action === 'Add') {
+          this.add(output);
+        } else if (action === 'Update') {
+          this.edit(output);
+        }
+      },
     );
   }
 
@@ -127,7 +125,7 @@ export class WorkoutComponent implements OnInit {
       res => {
         if (res.status === 200 && res.body) {
           Array.from(res.body).forEach((workout: WorkoutModel) => {
-            this.workouts.push(this.clone(workout));
+            this.workouts.push(WorkoutService.clone(workout));
           });
         } else if (res.status === 204) {
           console.log('No workouts found');
@@ -145,7 +143,7 @@ export class WorkoutComponent implements OnInit {
     );
   }
 
-  private start(workout: WorkoutModel) {
+  protected start(workout: WorkoutModel) {
     workout.start = new Date();
     workout.addNote(WorkoutService.getStartedAt(workout.start));
     this.update(workout);
@@ -158,7 +156,7 @@ export class WorkoutComponent implements OnInit {
           if (res.status === 200) {
             console.log(`Workout #${workout.id} updated successfully`);
             this.workouts.splice(this.workouts.indexOf(workout), 1);
-            this.workouts.push(this.clone(res.body));
+            this.workouts.push(WorkoutService.clone(res.body));
             alert(`Workout #${workout.id} updated successfully`);
           } else if (res.status === 204) {
             alert('Workout is not available in database');
