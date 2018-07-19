@@ -36,6 +36,23 @@ export class RestClientService extends ServiceBase {
     );
   }
 
+  createWorkout(workout: WorkoutModel, authToken: string) {
+    return this.client.post(
+      this.workoutUrl.toString(),
+      JSON.stringify(workout),
+      {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : authToken
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
+      }
+    );
+  }
+
   deleteCategory(id: number, authToken: string) {
     return this.client.delete(
       `${this.categoryUrl.toString()}/${id}`,

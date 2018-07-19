@@ -7,7 +7,6 @@ import { NgbModal } from '../../../node_modules/@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../_services/auth.service';
 import { RestClientService } from '../_services/rest-client.service';
 import { WorkoutService } from '../_services/workout.service';
-import { CategoryModel } from '../category/category-model';
 import { WorkoutModel } from './workout-model';
 import { WorkoutPlusComponent } from '../workout-plus/workout-plus.component';
 
@@ -25,7 +24,6 @@ export class WorkoutComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private restService: RestClientService,
-    private router: Router,
     private modalService: NgbModal,
   ) { }
 
@@ -39,10 +37,32 @@ export class WorkoutComponent implements OnInit {
 
   private add(workout: WorkoutModel) {
     if (workout) {
-      // TODO: call service to add workout
-      this.workouts.push(workout);
+      workout.notes = null;
+      this.restService.createWorkout(workout, this.authService.auth).subscribe(
+        res => {
+          const resource = document.createElement('a');
+          resource.href = res.headers.get('Location');
+          const pathItems = resource.pathname.split('/');
+          const id = pathItems[pathItems.length - 1];
+
+          workout.id = parseInt(id, 10);
+          this.workouts.push(WorkoutService.clone(workout));
+          alert(`Workout [${workout.title}] created successfully`);
+        },
+        err => {
+          if (err.status === 401 || err.status === 403) {
+            console.log('Unauthorized access to Workout');
+          } else if (err.status === 400) {
+            console.log('Non existing Workout');
+          }
+          alert('Error creating Workout');
+        },
+        () => {
+          this.resetFilteredWorkouts();
+        }
+      );
     } else {
-      console.log(`Invalid workout data :: ${workout}`);
+      console.log('Invalid workout name :: ' + workout);
     }
   }
 
