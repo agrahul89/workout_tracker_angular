@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { NgbModal } from '../../../node_modules/@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../_services/auth.service';
-import { RestClientService } from '../_services/rest-client.service';
 import { WorkoutService } from '../_services/workout.service';
 import { WorkoutModel } from './workout-model';
 import { WorkoutPlusComponent } from '../workout-plus/workout-plus.component';
@@ -23,7 +21,7 @@ export class WorkoutComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private restService: RestClientService,
+    private restService: WorkoutService,
     private modalService: NgbModal,
   ) { }
 
@@ -38,7 +36,7 @@ export class WorkoutComponent implements OnInit {
   private add(workout: WorkoutModel) {
     if (workout) {
       workout.notes = null;
-      this.restService.createWorkout(workout, this.authService.auth).subscribe(
+      this.restService.create(workout, this.authService.auth).subscribe(
         res => {
           const resource = document.createElement('a');
           resource.href = res.headers.get('Location');
@@ -69,7 +67,7 @@ export class WorkoutComponent implements OnInit {
   protected delete(workout: WorkoutModel) {
     const confirmed = confirm('Do you really want to delete this workout?');
     if (confirmed) {
-      this.restService.deleteWorkout(workout.id, this.authService.auth).subscribe(
+      this.restService.delete(workout.id, this.authService.auth).subscribe(
         res => {
           if (res.status === 200) {
             console.log(`Workout #${workout.id} deleted successfully`);
@@ -141,7 +139,7 @@ export class WorkoutComponent implements OnInit {
   }
 
   private retrieveAll(authToken: string): void {
-    this.restService.getWorkouts(authToken).subscribe(
+    this.restService.getAll(authToken).subscribe(
       res => {
         if (res.status === 200 && res.body) {
           Array.from(res.body).forEach((workout: WorkoutModel) => {
@@ -171,7 +169,7 @@ export class WorkoutComponent implements OnInit {
 
   private update(workout: WorkoutModel) {
     if (workout && workout.title && workout.category && workout.category.category) {
-      this.restService.updateWorkout(workout, this.authService.auth).subscribe(
+      this.restService.update(workout, this.authService.auth).subscribe(
         res => {
           if (res.status === 200) {
             console.log(`Workout #${workout.id} updated successfully`);

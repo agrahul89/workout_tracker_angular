@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { CategoryModel } from './category-model';
 import { AuthService } from '../_services/auth.service';
 import { CategoryService } from '../_services/category.service';
-import { RestClientService } from '../_services/rest-client.service';
 
 @Component({
   selector: 'app-category',
@@ -21,8 +19,8 @@ export class CategoryComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private restService: RestClientService,
-    private router: Router) { }
+    private restService: CategoryService
+  ) { }
 
   ngOnInit() {
     this.retrieveAll(this.authService.auth);
@@ -34,7 +32,7 @@ export class CategoryComponent implements OnInit {
 
   private add(category: string) {
     if (category) {
-      this.restService.createCategory(category, this.authService.auth).subscribe(
+      this.restService.create(category, this.authService.auth).subscribe(
         res => {
           const resource = document.createElement('a');
           resource.href = res.headers.get('Location');
@@ -63,7 +61,7 @@ export class CategoryComponent implements OnInit {
   private delete(category: CategoryModel) {
     const confirmed = confirm('Deleting this category will also delete all workouts for this category');
     if (confirmed) {
-      this.restService.deleteCategory(category.id, this.authService.auth).subscribe(
+      this.restService.delete(category.id, this.authService.auth).subscribe(
         res => {
           if (res.status === 200) {
             console.log(`Category #${category.id} deleted successfully`);
@@ -111,7 +109,7 @@ export class CategoryComponent implements OnInit {
   }
 
   private retrieveAll(authToken: string): void {
-    this.restService.getCategories(authToken).subscribe(
+    this.restService.getAll(authToken).subscribe(
       res => {
         if (res.status === 200 && res.body) {
           Array.from(res.body).forEach((category: CategoryModel) => {
@@ -135,7 +133,7 @@ export class CategoryComponent implements OnInit {
 
   private update(category: CategoryModel) {
     if (category && category.category && category.category.trim()) {
-      this.restService.updateCategory(category, this.authService.auth).subscribe(
+      this.restService.update(category, this.authService.auth).subscribe(
         res => {
           if (res.status === 200) {
             console.log(`Category #${category.id} updated successfully`);

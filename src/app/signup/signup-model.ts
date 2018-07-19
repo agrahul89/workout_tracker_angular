@@ -7,4 +7,5 @@ export class SignupModel {
     public password?: string) { }
 
   toString() {return JSON.stringify(this); }
+
 }

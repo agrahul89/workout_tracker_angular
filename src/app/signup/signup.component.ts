@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import { RestClientService } from '../_services/rest-client.service';
+import { RegistrationService } from '../_services/registration.service';
 import { SignupModel } from './signup-model';
 
 @Component({
@@ -32,7 +32,7 @@ export class SignupComponent {
     'Password must contain one number'
   ];
 
-  constructor(private signupService: RestClientService) { }
+  constructor(private signupService: RegistrationService) { }
 
   onSubmit() {
     this.checkEmailExistsAndRegister(this.registrationForm.email);
@@ -91,4 +91,5 @@ export class SignupComponent {
       console.log('Registration Message: ' + this.registrationMessage);
     }
   }
+
 }

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { SigninModel } from './signin-model';
 import { AuthService } from '../_services/auth.service';
 import { ComponentBase } from '../_base/base-component';
+import { SigninModel } from './signin-model';
 
 @Component({
   selector: 'app-signin',

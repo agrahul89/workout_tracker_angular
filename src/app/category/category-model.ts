@@ -3,7 +3,8 @@ export class CategoryModel {
     constructor(
         public category: string,
         public editing: boolean = false,
-        public id?: number) { }
+        public id?: number
+    ) { }
 
     startsWith(query: string): boolean {
         if (query) {
@@ -20,4 +21,5 @@ export class CategoryModel {
     toString(): string {
         return JSON.stringify(this);
     }
+
 }
