@@ -17,41 +17,67 @@ export class WorkoutService extends ServiceBase {
     super(client);
   }
 
-  static clone(workout: WorkoutModel): WorkoutModel {
+  public static clone(workout: WorkoutModel): WorkoutModel {
     const category = new CategoryModel(workout.category.category, false, workout.category.id);
     return new WorkoutModel(workout.title, category, workout.note, workout.burnrate, false,
-      workout.start, workout.end, [], workout.id);
+      workout.start, workout.end, workout.id);
   }
 
-  static getFormatForDate(): string {
+  public static copy(existing: WorkoutModel, updated: WorkoutModel): void {
+    if (updated) {
+      existing.editing = false;
+      existing.id = updated.id;
+      existing.end = updated.end;
+      existing.note = updated.note;
+      existing.title = updated.title;
+      existing.start = updated.start;
+      existing.burnrate = updated.burnrate;
+      existing.notes = WorkoutService.createNotes(updated.note, updated.start, updated.end);
+      if (updated.category) {
+        existing.category.id = updated.category.id;
+        existing.category.category = updated.category.category;
+        existing.category.editing = false;
+      }
+    }
+  }
+
+  public static createNotes(note: string, start: Date, end: Date): string[] {
+    const notes: string[] = [];
+    if (note) { notes.push(note); }
+    if (start) { notes.push(WorkoutService.getStartedAt(start)); }
+    if (end) { notes.push(WorkoutService.getCompletedAt(end)); }
+    return notes;
+  }
+
+  public static getFormatForDate(): string {
     return 'DD MMM YYYY';
   }
 
-  static getFormatForTime(): string {
+  public static getFormatForTime(): string {
     return 'HH:mm:ss';
   }
 
-  static getFormatForTimestamp(): string {
+  public static getFormatForTimestamp(): string {
     return WorkoutService.getFormatForDate() + ' ' + WorkoutService.getFormatForTime();
   }
 
-  static getFormatForTimestampWithZone(): string {
+  public static getFormatForTimestampWithZone(): string {
     return WorkoutService.getFormatForDate() + ' ' + WorkoutService.getFormatForTime() + ' Z';
   }
 
-  static getCompletedAt(date: Date): string {
+  public static getCompletedAt(date: Date): string {
     const format = moment(date).isBefore(moment().startOf('day')) ?
     WorkoutService.getFormatForTimestamp() : WorkoutService.getFormatForTime();
     return `Completed@ ${moment(date).format(format)}`;
   }
 
-  static getStartedAt(date: Date): string {
+  public static getStartedAt(date: Date): string {
     const format = moment(date).isBefore(moment().startOf('day')) ?
     WorkoutService.getFormatForTimestamp() : WorkoutService.getFormatForTime();
     return `Started@ ${moment(date).format(format)}`;
   }
 
-  create(workout: WorkoutModel, authToken: string) {
+  public create(workout: WorkoutModel, authToken: string) {
     return this.client.post(
       this.workoutUrl.toString(),
       JSON.stringify(workout),
@@ -68,7 +94,7 @@ export class WorkoutService extends ServiceBase {
     );
   }
 
-  delete(id: number, authToken: string) {
+  public delete(id: number, authToken: string) {
     return this.client.delete(
       `${this.workoutUrl.toString()}/${id}`,
       {
@@ -84,7 +110,7 @@ export class WorkoutService extends ServiceBase {
     );
   }
 
-  getAll(authToken: string) {
+  public getAll(authToken: string) {
     return this.client.get<WorkoutModel[]>(
       this.workoutUrl.toString(),
       {
@@ -99,7 +125,7 @@ export class WorkoutService extends ServiceBase {
     );
   }
 
-  update(workout: WorkoutModel, authToken: string) {
+  public update(workout: WorkoutModel, authToken: string) {
     return this.client.put<WorkoutModel>(
       `${this.workoutUrl.toString()}/${workout.id}`,
       JSON.stringify(workout),

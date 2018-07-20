@@ -16,6 +16,7 @@ export class WorkoutPlusComponent implements OnInit {
   @Input() action: string;
   @Input() workout: WorkoutModel;
   protected categories: CategoryModel[] = [];
+  protected defaultCategory = new CategoryModel('Select a Category', true, 0);
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -24,11 +25,12 @@ export class WorkoutPlusComponent implements OnInit {
 
   ngOnInit() {
     if (!this.workout) {
-      this.workout = new WorkoutModel('', new CategoryModel(null), '', 0.0, false);
+      this.workout = new WorkoutModel(null, this.defaultCategory, null, 0.0, false);
     }
     this.restService.getAll(this.authService.auth).subscribe(
       res => {
         if (res.status === 200 && res.body) {
+          this.categories.push(this.defaultCategory);
           Array.from(res.body).forEach((category: CategoryModel) => {
             this.categories.push(CategoryService.clone(category));
           });

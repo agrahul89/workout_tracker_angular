@@ -45,19 +45,15 @@ export class WorkoutComponent implements OnInit {
 
           workout.id = parseInt(id, 10);
           this.workouts.push(WorkoutService.clone(workout));
-          alert(`Workout [${workout.title}] created successfully`);
         },
         err => {
           if (err.status === 401 || err.status === 403) {
             console.log('Unauthorized access to Workout');
-          } else if (err.status === 400) {
-            console.log('Non existing Workout');
+          } else if (err.status === 400 && err.error) {
+            alert(Array.from(err.error.messages).join('\n'));
           }
-          alert('Error creating Workout');
         },
-        () => {
-          this.resetFilteredWorkouts();
-        }
+        () => { this.resetFilteredWorkouts(); }
       );
     } else {
       console.log('Invalid workout name :: ' + workout);
@@ -72,7 +68,6 @@ export class WorkoutComponent implements OnInit {
           if (res.status === 200) {
             console.log(`Workout #${workout.id} deleted successfully`);
             this.workouts.splice(this.workouts.indexOf(workout), 1);
-            alert(`Workout [${workout.title}] deleted successfully`);
           } else {
             console.log(`Workout [#${workout.title}] could not be deleted`);
           }
@@ -97,7 +92,7 @@ export class WorkoutComponent implements OnInit {
 
   protected end(workout: WorkoutModel) {
     workout.end = new Date();
-    workout.addNote(WorkoutService.getCompletedAt(workout.end));
+    // workout.addNote(WorkoutService.getCompletedAt(workout.end));
     this.update(workout);
   }
 
@@ -117,9 +112,7 @@ export class WorkoutComponent implements OnInit {
   protected openTemplate(action: string, workout?: WorkoutModel): void {
     const modalRef = this.modalService.open(WorkoutPlusComponent, { centered: true });
     modalRef.componentInstance.action = action;
-    if (workout) {
-      modalRef.componentInstance.workout = workout;
-    }
+    if (workout) { modalRef.componentInstance.workout = workout; }
     modalRef.result.then(
       output => {
         if (action === 'Add') {
@@ -128,6 +121,7 @@ export class WorkoutComponent implements OnInit {
           this.edit(output);
         }
       },
+      dismiss => {}
     );
   }
 
@@ -163,7 +157,7 @@ export class WorkoutComponent implements OnInit {
 
   protected start(workout: WorkoutModel) {
     workout.start = new Date();
-    workout.addNote(WorkoutService.getStartedAt(workout.start));
+    // workout.addNote(WorkoutService.getStartedAt(workout.start));
     this.update(workout);
   }
 
@@ -173,9 +167,8 @@ export class WorkoutComponent implements OnInit {
         res => {
           if (res.status === 200) {
             console.log(`Workout #${workout.id} updated successfully`);
-            this.workouts.splice(this.workouts.indexOf(workout), 1);
-            this.workouts.push(WorkoutService.clone(res.body));
-            alert(`Workout #${workout.id} updated successfully`);
+            // this.workouts.splice(this.workouts.indexOf(workout), 1, WorkoutService.clone(res.body));
+            WorkoutService.copy(workout, res.body);
           } else if (res.status === 204) {
             alert('Workout is not available in database');
           } else {

@@ -36,8 +36,6 @@
 
     <div class="form-group">
       <label for="categories">Categories</label>
-      <!-- <select class="form-control" id="category" name="category"
-      [(ngModel)]="workout.category" #category> -->
       <select class="form-control" id="category" name="category"
       (change)="workout.category = categories[$event.target.selectedIndex]">
         <option *ngFor="let category of categories" [ngValue]="category.id"
@@ -49,5 +47,7 @@
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary btn-block" (click)="close()">{{this?.action}} Workout</button>
+  <button type="button" class="btn btn-primary btn-block" (click)="close()"
+  [disabled]="!workout || !workout.title || !workout.title.trim()|| !workout.category
+  || workout.category.id === 0">{{this?.action}} Workout</button>
 </div>

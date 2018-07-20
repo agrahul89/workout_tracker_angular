@@ -3,6 +3,8 @@ import { WorkoutService } from '../_services/workout.service';
 
 export class WorkoutModel {
 
+    notes: string[];
+
     constructor(
         public title: string,
         public category: CategoryModel,
@@ -11,19 +13,9 @@ export class WorkoutModel {
         public editing: boolean = false,
         public start?: Date,
         public end?: Date,
-        public notes?: string[],
         public id?: number,
     ) {
-        this.notes = [];
-        if (note) {
-            this.notes.push(note);
-        }
-        if (start) {
-            this.notes.push(WorkoutService.getStartedAt(start));
-        }
-        if (end) {
-            this.notes.push(WorkoutService.getCompletedAt(end));
-        }
+        this.notes = WorkoutService.createNotes(note, start, end);
     }
 
     addNote(note: string): void {
