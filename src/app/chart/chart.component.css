@@ -1,0 +1,12 @@
+chart-area {
+    height: 60vh;
+    width: 100%;
+}
+
+quick-controls {
+    height: 10vh;
+}
+
+date-range-controls {
+    height: 30vh;
+}

@@ -13,6 +13,7 @@ import { WorkoutComponent } from './workout/workout.component';
 import { CategoryComponent } from './category/category.component';
 import { WorkoutPlusComponent } from './workout-plus/workout-plus.component';
 import { RegistrationService } from './_services/registration.service';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
    declarations: [
@@ -21,10 +22,11 @@ import { RegistrationService } from './_services/registration.service';
       SignupComponent,
       WorkoutComponent,
       CategoryComponent,
-      WorkoutPlusComponent
+      WorkoutPlusComponent,
+      ChartComponent
    ],
    entryComponents: [
-       WorkoutPlusComponent
+      WorkoutPlusComponent
    ],
    imports: [
       BrowserModule,
