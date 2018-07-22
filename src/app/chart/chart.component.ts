@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { api, Chart, Plot } from 'taucharts';
+import { BsDaterangepickerDirective, BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-chart',
@@ -8,9 +9,22 @@ import { api, Chart, Plot } from 'taucharts';
 })
 export class ChartComponent implements OnInit {
 
+  protected daterange: Date[] = [];
+
+  @ViewChild(BsDaterangepickerDirective)
+  protected daterangePicker: BsDaterangepickerDirective;
+
+  // Date Picker Custom Configuration
+  protected daterangePickerConfig: Partial<BsDaterangepickerConfig> = {
+    containerClass: 'theme-dark-blue',
+    displayMonths: 2,
+    showWeekNumbers: false
+  };
+
   constructor() { }
 
   ngOnInit() {
+    /*
     const bar: Chart = new Chart({
       data: [], // TODO: setup chart data here
       label: 'Calorie Consumption Chart',
@@ -19,7 +33,6 @@ export class ChartComponent implements OnInit {
       x: 'range',
       y: 'burntCalories',
       guide: {
-        /* color: {}, */
         interpolate: 'smooth',
         showGridLines: 'y',
         showAnchors: 'hover',
@@ -43,6 +56,13 @@ export class ChartComponent implements OnInit {
       },
     });
     bar.renderTo('#chart-area');
+    */
+  }
+
+  /* @HostListener('window: scroll')
+  onscrollEvent() { this.daterangePicker.hide(); } */
+  refreshChart() {
+    console.log(this.daterange[0] + '\n' + this.daterange[1]);
   }
 
 }

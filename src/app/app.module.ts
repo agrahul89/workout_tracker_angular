@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MomentModule } from 'ngx-moment';
 
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ import { ChartComponent } from './chart/chart.component';
       BrowserModule,
       FormsModule,
       HttpClientModule,
+      BsDatepickerModule.forRoot(),
       MomentModule,
       NgbModule.forRoot(),
       ReactiveFormsModule,
