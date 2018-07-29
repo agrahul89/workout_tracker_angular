@@ -1,11 +1,19 @@
+import * as moment from 'moment';
+
 import { WorkoutModel } from '../workout/workout-model';
+import { DateTimeService } from '../_services/date-time.service';
 
 export class ChartModel {
-    constructor(
-        public range: string,
-        public burntCalories:  number,
-        public workouts: WorkoutModel[]
-    ) {
-
+    public burntCalories = 0.0;
+    public category: string;
+    public date: string;
+    public duration = 0.0;
+    constructor(public workout: WorkoutModel) {
+        if (workout) {
+            this.duration = DateTimeService.getDiffInMins(workout.start, workout.end);
+            this.burntCalories = workout.burnrate * this.duration;
+            this.category = workout.category.category;
+            this.date = DateTimeService.format(workout.start, DateTimeService.getISODateFormat());
+        }
     }
 }

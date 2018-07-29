@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { CategoryModel } from '../category/category-model';
 import { WorkoutModel } from '../workout/workout-model';
 import { ServiceBase } from '../_base/base-service';
+import { DateTimeService } from './date-time.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,14 @@ export class WorkoutService extends ServiceBase {
     const category = new CategoryModel(workout.category.category, false, workout.category.id);
     return new WorkoutModel(workout.title, category, workout.note, workout.burnrate, false,
       workout.start, workout.end, workout.id);
+  }
+
+  public static cloneAll(workouts: WorkoutModel[]): WorkoutModel[] {
+    const output: WorkoutModel[] = [];
+    Array.from(workouts).forEach((workout: WorkoutModel) => {
+      output.push(WorkoutService.clone(workout));
+    });
+    return output;
   }
 
   public static copy(existing: WorkoutModel, updated: WorkoutModel): void {
@@ -49,31 +58,15 @@ export class WorkoutService extends ServiceBase {
     return notes;
   }
 
-  public static getFormatForDate(): string {
-    return 'DD MMM YYYY';
-  }
-
-  public static getFormatForTime(): string {
-    return 'HH:mm:ss';
-  }
-
-  public static getFormatForTimestamp(): string {
-    return WorkoutService.getFormatForDate() + ' ' + WorkoutService.getFormatForTime();
-  }
-
-  public static getFormatForTimestampWithZone(): string {
-    return WorkoutService.getFormatForDate() + ' ' + WorkoutService.getFormatForTime() + ' Z';
-  }
-
   public static getCompletedAt(date: Date): string {
     const format = moment(date).isBefore(moment().startOf('day')) ?
-    WorkoutService.getFormatForTimestamp() : WorkoutService.getFormatForTime();
+    DateTimeService.getFormatForTimestamp() : DateTimeService.getFormatForTime();
     return `Completed@ ${moment(date).format(format)}`;
   }
 
   public static getStartedAt(date: Date): string {
     const format = moment(date).isBefore(moment().startOf('day')) ?
-    WorkoutService.getFormatForTimestamp() : WorkoutService.getFormatForTime();
+    DateTimeService.getFormatForTimestamp() : DateTimeService.getFormatForTime();
     return `Started@ ${moment(date).format(format)}`;
   }
 
@@ -113,6 +106,23 @@ export class WorkoutService extends ServiceBase {
   public getAll(authToken: string) {
     return this.client.get<WorkoutModel[]>(
       this.workoutUrl.toString(),
+      {
+        headers: {
+          'Accept' : 'application/json',
+          'Authorization' : authToken
+        },
+        observe: 'response',
+        reportProgress: false,
+        responseType: 'json'
+      }
+    );
+  }
+
+  public search(start: Date, end: Date, authToken: string) {
+    const from = DateTimeService.format(start, DateTimeService.getISODateFormat());
+    const to   = DateTimeService.format(  end, DateTimeService.getISODateFormat());
+    return this.client.get<WorkoutModel[]>(
+      `${this.workoutUrl}/start/${from}/end/${to}`,
       {
         headers: {
           'Accept' : 'application/json',

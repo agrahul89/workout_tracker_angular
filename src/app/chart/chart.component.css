@@ -35,8 +35,8 @@ div.quick-controls {
     overflow-x: auto
 }
 div.quick-controls * {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
 }
 div.quick-controls *:first-child {
     margin-left: 0rem;
