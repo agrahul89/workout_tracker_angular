@@ -39,7 +39,7 @@ export class CategoryComponent implements OnInit {
           const pathItems = resource.pathname.split('/');
           const id = pathItems[pathItems.length - 1];
           this.categories.push(new CategoryModel(category, false, parseInt(id, 10)));
-          alert(`Category [${category}] created successfully`);
+          console.log(`Category [${category}] created successfully`);
         },
         err => {
           if (err.status === 401 || err.status === 403) {
@@ -65,7 +65,7 @@ export class CategoryComponent implements OnInit {
         res => {
           if (res.status === 200) {
             console.log(`Category #${category.id} deleted successfully`);
-            alert(`Category [${category.category}] deleted successfully`);
+            console.log(`Category [${category.category}] deleted successfully`);
             this.categories.splice(this.categories.indexOf(category), 1);
           } else {
             console.log(`Category [#${category.category}] could not be deleted`);
@@ -125,7 +125,7 @@ export class CategoryComponent implements OnInit {
           console.log('Unauthorized access to category');
           this.categories.length = 0;
         }
-        alert('Error accessing categories');
+        console.log('Error accessing categories');
       },
       () => this.resetFilteredCategories()
     );
@@ -137,7 +137,7 @@ export class CategoryComponent implements OnInit {
         res => {
           if (res.status === 200) {
             console.log(`Category #${category.id} updated successfully`);
-            alert(`Category updated successfully to [${category.category}]`);
+            console.log(`Category updated successfully to [${category.category}]`);
             category.category = res.body.category;
           } else if (res.status === 204) {
             alert('Category is not available in database');

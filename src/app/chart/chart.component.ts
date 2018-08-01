@@ -69,7 +69,7 @@ export class ChartComponent implements OnDestroy {
                      date: {label: 'Date',           format: (value: string) => value.valueOf()},
                  category: {label: 'Category',       format: (value: string) => value.valueOf()},
                     title: {label: 'Workout',        format: (value: string) => value.valueOf()},
-            burntCalories: {label: 'Calories Burnt', format: (value: number) => value.toFixed(0)},
+            burntCalories: {label: 'Calories Burnt', format: (value: number) => value.toFixed(1)},
           }
         }),
       ]
