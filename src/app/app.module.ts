@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MomentModule } from 'ngx-moment';
 
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { WorkoutComponent } from './workout/workout.component';
 import { CategoryComponent } from './category/category.component';
 import { WorkoutPlusComponent } from './workout-plus/workout-plus.component';
 import { RegistrationService } from './_services/registration.service';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
    declarations: [
@@ -21,15 +23,17 @@ import { RegistrationService } from './_services/registration.service';
       SignupComponent,
       WorkoutComponent,
       CategoryComponent,
-      WorkoutPlusComponent
+      WorkoutPlusComponent,
+      ChartComponent
    ],
    entryComponents: [
-       WorkoutPlusComponent
+      WorkoutPlusComponent
    ],
    imports: [
       BrowserModule,
       FormsModule,
       HttpClientModule,
+      BsDatepickerModule.forRoot(),
       MomentModule,
       NgbModule.forRoot(),
       ReactiveFormsModule,
