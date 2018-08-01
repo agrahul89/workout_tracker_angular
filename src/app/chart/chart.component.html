@@ -1,6 +1,6 @@
 <div class="chart-container">
   <div class="date-range-controls">
-    <input class="form-control" id="range" name="range" placeholder="Select a range" readonly
+    <input class="form-control" id="daterange" name="daterange" placeholder="Select a range" readonly
     bsDaterangepicker #range="bsDaterangepicker" [(ngModel)]="daterange"
     [bsConfig]="daterangePickerConfig" [outsideClick]="true" (bsValueChange)="refreshChart($event)">
   </div>

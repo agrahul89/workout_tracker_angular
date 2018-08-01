@@ -51,8 +51,6 @@ export class ChartComponent implements OnDestroy {
       color: 'category',
       size: 'burntCalories',
       guide: {
-        /* Padding around the chart-area
-        padding: {t: 30, r: 30, b: 30, l: 30}, */
         showGridLines: 'y',
         x: { nice: false, label: { padding: 0, text: 'Date Range' } },
         y: { nice: false, label: { padding: 0, text: 'Total Calories Burnt' } },
@@ -61,13 +59,18 @@ export class ChartComponent implements OnDestroy {
         asyncRendering: true,
         autoRatio: true,
         excludeNull: true,
-        /* fitModel: 'entire-view', */
       },
       plugins: [
         api.plugins.get('crosshair')({ xAxis: false, yAxis: true }),
         api.plugins.get('legend')   ({ position: 'left' }),
         api.plugins.get('tooltip')({
-          fields: ['date', 'category', 'burntCalories']
+          fields: ['date', 'category', 'title', 'burntCalories'],
+          formatters: {
+                     date: {label: 'Date',           format: (value: string) => value.valueOf()},
+                 category: {label: 'Category',       format: (value: string) => value.valueOf()},
+                    title: {label: 'Workout',        format: (value: string) => value.valueOf()},
+            burntCalories: {label: 'Calories Burnt', format: (value: number) => value.toFixed(0)},
+          }
         }),
       ]
     });

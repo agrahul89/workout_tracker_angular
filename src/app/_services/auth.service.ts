@@ -12,7 +12,7 @@ import { SigninModel } from '../signin/signin-model';
 export class AuthService extends ServiceBase {
 
   private static PUBLIC_HOME: String = '/';
-  private static SECURE_HOME: String = '/track';
+  private static SECURE_HOME: String = '/workout';
 
   private authToken: String;
   private signinUrl: String = this.baseUrl + '/login';

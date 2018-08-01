@@ -136,9 +136,10 @@ export class WorkoutComponent implements OnInit {
     this.restService.getAll(authToken).subscribe(
       res => {
         if (res.status === 200 && res.body) {
-          Array.from(res.body).forEach((workout: WorkoutModel) => {
+          this.workouts = WorkoutService.cloneAll(res.body);
+          /* Array.from(res.body).forEach((workout: WorkoutModel) => {
             this.workouts.push(WorkoutService.clone(workout));
-          });
+          }); */
         } else if (res.status === 204) {
           console.log('No workouts found');
           this.workouts.length = 0;
