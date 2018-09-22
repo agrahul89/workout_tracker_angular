@@ -109,7 +109,7 @@ export class WorkoutComponent implements OnInit {
     );
   }
 
-  protected openTemplate(action: string, workout?: WorkoutModel): void {
+  public openTemplate(action: string, workout?: WorkoutModel): void {
     const modalRef = this.modalService.open(WorkoutPlusComponent, { centered: true });
     modalRef.componentInstance.action = action;
     if (workout) { modalRef.componentInstance.workout = workout; }

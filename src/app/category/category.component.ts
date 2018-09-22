@@ -30,7 +30,7 @@ export class CategoryComponent implements OnInit {
     ).subscribe();
   }
 
-  private add(category: string) {
+  public add(category: string) {
     if (category) {
       this.restService.create(category, this.authService.auth).subscribe(
         res => {

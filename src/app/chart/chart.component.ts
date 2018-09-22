@@ -19,13 +19,13 @@ import { ChartModel } from './chart-model';
 })
 export class ChartComponent implements OnDestroy {
 
-  protected daterange: Date[] = [];
+  public daterange: Date[] = [];
 
   @ViewChild(BsDaterangepickerDirective)
-  protected daterangePicker: BsDaterangepickerDirective;
+  public daterangePicker: BsDaterangepickerDirective;
 
   // Date Picker Custom Configuration
-  protected daterangePickerConfig: Partial<BsDaterangepickerConfig> = {
+  public daterangePickerConfig: Partial<BsDaterangepickerConfig> = {
     containerClass: 'theme-dark-blue',
     displayMonths: 2,
     showWeekNumbers: false
@@ -84,7 +84,7 @@ export class ChartComponent implements OnDestroy {
 
   /* @HostListener('window: scroll')
   onscrollEvent() { this.daterangePicker.hide(); } */
-  protected refreshChart(daterange: Date[]) {
+  public refreshChart(daterange: Date[]) {
 
     this.destroyChart();
     this.daterange.length = 0;
@@ -112,25 +112,25 @@ export class ChartComponent implements OnDestroy {
     );
   }
 
-  protected refreshForPrevWeek() {
+  public refreshForPrevWeek() {
     const from = moment().startOf('week').subtract(7, 'd').toDate();
     const to = moment().endOf('week').subtract(7, 'd').toDate();
     this.refreshChart(Array.of(from, to));
   }
 
-  protected refreshForThisWeek() {
+  public refreshForThisWeek() {
     const from = moment().startOf('week').toDate();
     const to = moment().endOf('week').toDate();
     this.refreshChart(Array.of(from, to));
   }
 
-  protected refreshForToday() {
+  public refreshForToday() {
     const from = DateTimeService.getTodayAtMidnight();
     const to = DateTimeService.getTodayAtMidnight();
     this.refreshChart(Array.of(from, to));
   }
 
-  protected refreshForYesterday() {
+  public refreshForYesterday() {
     const from = DateTimeService.getYesterdayAtMidnight();
     const to = DateTimeService.getYesterdayAtMidnight();
     this.refreshChart(Array.of(from, to));

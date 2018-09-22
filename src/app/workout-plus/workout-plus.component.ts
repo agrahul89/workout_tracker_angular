@@ -15,7 +15,7 @@ export class WorkoutPlusComponent implements OnInit {
 
   @Input() action: string;
   @Input() workout: WorkoutModel;
-  protected categories: CategoryModel[] = [];
+  public categories: CategoryModel[] = [];
   protected defaultCategory = new CategoryModel('Select a Category', true, 0);
 
   constructor(
